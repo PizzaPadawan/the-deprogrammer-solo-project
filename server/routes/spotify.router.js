@@ -2,7 +2,7 @@ const express = require('express');
 const pool = require('../modules/pool');
 const axios = require('axios');
 const router = express.Router();
-const {rejectUnauthenticated} = require('../modules/authentication-middleware')
+const { rejectUnauthenticated } = require('../modules/authentication-middleware')
 
 //import dotenv variables
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -38,17 +38,25 @@ router.post('/', rejectUnauthenticated, async (req, res) => {
                     'Authorization': `${accessToken.token_type} ${accessToken.access_token}`
                 }
             })
-        // create new playlist entry
-        const result = await pool.query(`INSERT INTO "playlist"("spotify_id","user_id")
-        VALUES($1,$2) RETURNING "id";`, [req.body.spotify_uri, req.user.id])
+        // create new playlist entry, create toplist for admin
+        const result = await pool.query(`WITH inserted_playlist AS (
+            INSERT INTO "playlist" ("spotify_id", "user_id")
+            VALUES ($1, $2)
+            RETURNING "id"
+          )
+          INSERT INTO "toplist" ("playlist_id", "user_id")
+          SELECT "id", $2
+          FROM inserted_playlist RETURNING "playlist_id";`, [req.body.spotify_uri, req.user.id]);
+
         // query text for insert statements in for loop
         let queryText = `INSERT INTO "masterlist"("playlist_id","track","album","artist","recording_date")
-        VALUES($1,$2,$3,$4,$5);`
+        VALUES($1,$2,$3,$4,$5)`
+
         // attach response data to variable to use in for loop
         let playlistArray = response.data.items
         for (track of playlistArray) {
             pool.query(queryText,
-                [result.rows[0].id, track.track.name, track.track.album.name, track.track.artists[0].name, req.body.recording_date])
+                [result.rows[0].playlist_id, track.track.name, track.track.album.name, track.track.artists[0].name, req.body.recording_date,])
                 .catch(err => console.log("err on playlist track DB insert", err));
         }
         res.sendStatus(201);

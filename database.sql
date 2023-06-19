@@ -29,7 +29,7 @@ CREATE TABLE "masterlist"(
 
 CREATE TABLE "toplist"(
 	"id" SERIAL PRIMARY KEY,
-	"masterlist_id" INT REFERENCES "masterlist" NOT NULL,
+	"playlist_id" INT REFERENCES "playlist" NOT NULL,
 	"user_id" INT REFERENCES "user" NOT NULL,
 	"hidden" BOOLEAN DEFAULT FALSE,
 	"notes" VARCHAR(1000)
