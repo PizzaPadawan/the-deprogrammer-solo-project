@@ -20,7 +20,7 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
         })
         //assigning new access code
         accessToken = response.data
-        console.log("*robot voice* ACCESS. GRANTED.", accessToken, req.user);
+        console.log("*robot voice* ACCESS. GRANTED.");
         res.sendStatus(200);
     } catch (error) {
         console.log("Error retreiving Spotify access token", error)
@@ -31,7 +31,7 @@ router.post('/', rejectUnauthenticated, async (req, res) => {
     try {
         // sending GET request for playlist data, passing in the Playlist URI
         const response = await axios.get(
-            `https://api.spotify.com/v1/playlists/${req.body.spotify_uri}/tracks?fields=items(track(name,album(name),artists(name)))`,
+            `https://api.spotify.com/v1/playlists/${req.body.spotify_id}/tracks?fields=items(track(name,album(name),artists(name)))`,
             {
                 headers: {
                     // sending access token info for auth
@@ -46,7 +46,7 @@ router.post('/', rejectUnauthenticated, async (req, res) => {
           )
           INSERT INTO "toplist" ("playlist_id", "user_id")
           SELECT "id", $2
-          FROM inserted_playlist RETURNING "playlist_id";`, [req.body.spotify_uri, req.user.id]);
+          FROM inserted_playlist RETURNING "playlist_id";`, [req.body.spotify_id, req.user.id]);
 
         // query text for insert statements in for loop
         let queryText = `INSERT INTO "masterlist"("playlist_id","track","album","artist","recording_date")
