@@ -11,7 +11,8 @@ const passport = require('./strategies/user.strategy');
 const userRouter = require('./routes/user.router');
 const spotifyRouter = require('./routes/spotify.router');
 const toplistRouter = require('./routes/toplist.router');
-const gameRouter = require('./routes/game.router')
+const gameRouter = require('./routes/game.router');
+const masterlistRouter = require('./routes/masterlist.router');
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -29,6 +30,7 @@ app.use('/api/user', userRouter);
 app.use('/api/spotify', spotifyRouter);
 app.use('/api/toplist', toplistRouter);
 app.use('/api/game', gameRouter);
+app.use('/api/masterlist', masterlistRouter);
 
 // Serve static files
 app.use(express.static('build'));
