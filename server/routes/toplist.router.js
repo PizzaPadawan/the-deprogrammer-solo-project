@@ -16,9 +16,18 @@ router.post('/:list_id', rejectUnauthenticated, (req, res) => {
     pool.query(queryText, [req.params.list_id, req.body.username])
         .then(response => res.sendStatus(201))
         .catch(err => {
-            console.log("Error on user DB select", err);
+            console.log("Error on user POST in @toplist.router", err);
             res.sendStatus(500);
         });
 });
+
+router.delete('/:user_id', rejectUnauthenticated, (req, res) => {
+    const queryText = `DELETE FROM "toplist" WHERE "user_id"=$1 AND "playlist_id"=$2;`
+    pool.query(queryText, [req.params.user_id, req.body.playlist_id])
+    .then(response => res.sendStatus(204))
+    .catch(err => {
+        console.log("Error on user DELETE in @toplist.router", err);
+    })
+})
 
 module.exports = router;
