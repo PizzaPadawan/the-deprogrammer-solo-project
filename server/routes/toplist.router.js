@@ -28,7 +28,7 @@ router.delete('/:user_id', rejectUnauthenticated, (req, res) => {
     WHERE "toplist"."masterlist_id"="masterlist"."id"
     AND "playlist"."id"=$1
     AND "toplist"."user_id"=$2;`
-    pool.query(queryText, [req.params.user_id, req.body.playlist_id])
+    pool.query(queryText, [req.body.playlist_id, req.params.user_id])
     .then(response => res.sendStatus(204))
     .catch(err => {
         console.log("Error on user DELETE in @toplist.router", err);
