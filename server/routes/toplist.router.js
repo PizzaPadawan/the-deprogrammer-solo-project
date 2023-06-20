@@ -57,12 +57,12 @@ router.get('/panels', rejectUnauthenticated, (req, res) => {
 
 // get request to retreive toplist to be edited by user and used in gameplay
 router.get('/top/:id', rejectUnauthenticated, (req, res) => {
-    const queryText = `SELECT "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","recording_date","is_played" FROM "masterlist"
+    const queryText = `SELECT "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","notes","recording_date","is_played" FROM "masterlist"
     JOIN "playlist" ON "playlist"."id"="masterlist"."playlist_id"
     JOIN "toplist" ON "toplist"."masterlist_id"="masterlist"."id"
     JOIN "user" ON "user"."id"="toplist"."user_id"
     WHERE "masterlist"."playlist_id"=$1 AND "toplist"."user_id"=$2
-    GROUP BY "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","recording_date","is_played"
+    GROUP BY "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","notes","recording_date","is_played"
     ORDER BY "album";`
     pool.query(queryText, [req.params.id, req.user.id])
         .then(result => {
@@ -75,7 +75,7 @@ router.get('/top/:id', rejectUnauthenticated, (req, res) => {
 // user function to mark toplist.hidden=TRUE for a given item, removing it from their toplist
 // or switch it back to FALSE if the user would like to bring it back into their toplist
 router.put('/hidden/:id', rejectUnauthenticated, (req, res) => {
-    
+
     let queryText = ``
 
     if (req.body.switch === "HIDE") {
@@ -91,5 +91,26 @@ router.put('/hidden/:id', rejectUnauthenticated, (req, res) => {
             res.sendStatus(500);
         });
 });
+
+router.put('/notes/:id', rejectUnauthenticated, (req, res) => {
+    const queryText = `UPDATE "toplist" SET "notes"=$1 WHERE "id"=$2;`
+
+    pool.query(queryText, [req.body.notes, req.params.id])
+    .then(result => res.sendStatus(201))
+    .catch(err => {
+        console.log("Error on /top/:id PUT in @toplist.router", err);
+        res.sendStatus(500);
+    });
+});
+
+// router.delete('/final/:id', rejectUnauthenticated, (req, res) => {
+//     const queryText = `DELETE FROM "toplist" WHERE "hidden"=TRUE AND "user_id"=$1;`
+//     pool.query(queryText, [req.user.id])
+//     .then(result => res.sendStatus(204))
+//     .catch(err => {
+//         console.log("Error on /final/:id DELETE in @toplist.router", err);
+//         res.sendStatus(500);
+//     });
+// });
 
 module.exports = router;
