@@ -35,7 +35,7 @@ router.delete('/:user_id', rejectUnauthenticated, (req, res) => {
         })
 });
 
-// GET req to display upcoming 
+// GET req to display upcoming panels for logged in user
 router.get('/panels', rejectUnauthenticated, (req, res) => {
     const queryText = `SELECT "playlist_id", "artist", STRING_AGG(DISTINCT "user"."username", ', ') AS "users", "masterlist"."recording_date" 
     FROM "masterlist"
@@ -55,7 +55,7 @@ router.get('/panels', rejectUnauthenticated, (req, res) => {
         });
 });
 
-// get request to retreive toplist to be edited by user and used in gameplay
+// get request to retreive toplist to be viewed / edited by user and used in gameplay
 router.get('/top/:id', rejectUnauthenticated, (req, res) => {
     const queryText = `SELECT "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","notes","recording_date","is_played" FROM "masterlist"
     JOIN "playlist" ON "playlist"."id"="masterlist"."playlist_id"

@@ -13,7 +13,6 @@ CREATE TABLE "user" (
 CREATE TABLE "playlist"(
 	"id" SERIAL PRIMARY KEY,
 	"spotify_id" VARCHAR(22) NOT NULL,
-	"user_id" INT REFERENCES "user" NOT NULL
 );
 
 CREATE TABLE "masterlist"(
@@ -29,7 +28,7 @@ CREATE TABLE "masterlist"(
 
 CREATE TABLE "toplist"(
 	"id" SERIAL PRIMARY KEY,
-	"playlist_id" INT REFERENCES "playlist" NOT NULL,
+	"masterlist_id" INT REFERENCES "masterlist" NOT NULL,
 	"user_id" INT REFERENCES "user" NOT NULL,
 	"hidden" BOOLEAN DEFAULT FALSE,
 	"notes" VARCHAR(1000)

@@ -38,18 +38,15 @@ router.post('/', rejectUnauthenticated, async (req, res) => {
                     'Authorization': `${accessToken.token_type} ${accessToken.access_token}`
                 }
             })
-        // create new playlist entry, create toplist for admin
+        // create new playlist entry
         const result = await pool.query(`
-            INSERT INTO "playlist" ("spotify_id", "user_id")
+            INSERT INTO "playlist" ("spotify_id")
             VALUES ($1, $2)
-            RETURNING "id";`, [req.body.spotify_id, req.user.id]);
-        
-        console.log(req.user.id);
+            RETURNING "id";`, [req.body.spotify_id]);
 
         // query text for insert statements in for loop:
         // adds new masterlist row, and then adds toplist row with reference to 
         // newly created masterlist.id
-
         let queryText = `WITH "inserted_masterlist" AS (
             INSERT INTO "masterlist"("playlist_id","track","album","artist","recording_date")
             VALUES($1,$2,$3,$4,$5)
