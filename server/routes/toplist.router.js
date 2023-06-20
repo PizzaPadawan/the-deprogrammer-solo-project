@@ -57,19 +57,23 @@ router.get('/panels', rejectUnauthenticated, (req, res) => {
 
 // get request to retreive toplist to be edited by user and used in gameplay
 router.get('/top/:id', rejectUnauthenticated, (req, res) => {
-    const queryText = `SELECT "track","album","artist","toplist"."masterlist_id","toplist"."hidden","recording_date","is_played" FROM "masterlist"
+    const queryText = `SELECT "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","recording_date","is_played" FROM "masterlist"
     JOIN "playlist" ON "playlist"."id"="masterlist"."playlist_id"
     JOIN "toplist" ON "toplist"."masterlist_id"="masterlist"."id"
     JOIN "user" ON "user"."id"="toplist"."user_id"
-    WHERE "masterlist"."playlist_id" = $1
-    GROUP BY "track","album","artist","toplist"."masterlist_id","toplist"."hidden","recording_date","is_played"
+    WHERE "masterlist"."playlist_id"=$1 AND "toplist"."user_id"=$2
+    GROUP BY "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","recording_date","is_played"
     ORDER BY "album";`
-    pool.query(queryText, [req.params.id])
+    pool.query(queryText, [req.params.id, req.user.id])
     .then(result => {
         res.send(result.rows);
     }).catch(err => {
         console.log("Error on /top/id GET in @toplist.router", err);
     });
 });
+
+router.put('/top/:id', rejectUnauthenticated, (req, res) => {
+    const queryText = ``
+})
 
 module.exports = router;
