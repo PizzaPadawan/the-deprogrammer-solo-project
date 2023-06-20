@@ -29,10 +29,10 @@ router.delete('/:user_id', rejectUnauthenticated, (req, res) => {
     AND "playlist"."id"=$1
     AND "toplist"."user_id"=$2;`
     pool.query(queryText, [req.body.playlist_id, req.params.user_id])
-    .then(response => res.sendStatus(204))
-    .catch(err => {
-        console.log("Error on user DELETE in @toplist.router", err);
-    })
+        .then(response => res.sendStatus(204))
+        .catch(err => {
+            console.log("Error on user DELETE in @toplist.router", err);
+        })
 });
 
 // GET req to display upcoming 
@@ -46,13 +46,13 @@ router.get('/panels', rejectUnauthenticated, (req, res) => {
     HAVING $1 = ANY(ARRAY_AGG("user"."id"));`
 
     pool.query(queryText, [req.user.id])
-    .then(result => {
-        res.send(result.rows);
-    })
-    .catch(err => {
-        console.log("Error on /panels GET in @toplist.router", err);
-        res.sendStatus(500);
-    });
+        .then(result => {
+            res.send(result.rows);
+        })
+        .catch(err => {
+            console.log("Error on /panels GET in @toplist.router", err);
+            res.sendStatus(500);
+        });
 });
 
 // get request to retreive toplist to be edited by user and used in gameplay
@@ -65,31 +65,31 @@ router.get('/top/:id', rejectUnauthenticated, (req, res) => {
     GROUP BY "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","recording_date","is_played"
     ORDER BY "album";`
     pool.query(queryText, [req.params.id, req.user.id])
-    .then(result => {
-        res.send(result.rows);
-    }).catch(err => {
-        console.log("Error on /top/id GET in @toplist.router", err);
-    });
+        .then(result => {
+            res.send(result.rows);
+        }).catch(err => {
+            console.log("Error on /top/id GET in @toplist.router", err);
+        });
 });
 
-router.put('/hide/:id', rejectUnauthenticated, (req, res) => {
-    const queryText = `UPDATE "toplist" SET "hidden"=TRUE WHERE "id"=$1;`
-    pool.query(queryText, [req.params.id])
-    .then(result => res.sendStatus(200))
-    .catch(err => {
-        console.log("Error on /top/:id PUT in @toplist.router", err);
-        res.sendStatus(500);
-    });
-});
+// user function to mark toplist.hidden=TRUE for a given item, removing it from their toplist
+// or switch it back to FALSE if the user would like to bring it back into their toplist
+router.put('/hidden/:id', rejectUnauthenticated, (req, res) => {
+    
+    let queryText = ``
 
-router.put('/unhide/:id', rejectUnauthenticated, (req, res) => {
-    const queryText = `UPDATE "toplist" SET "hidden"=FALSE WHERE "id"=$1;`
+    if (req.body.switch === "HIDE") {
+        queryText = `UPDATE "toplist" SET "hidden"=TRUE WHERE "id"=$1;`
+    } else if (req.body.switch === "SHOW") {
+        queryText = `UPDATE "toplist" SET "hidden"=FALSE WHERE "id"=$1;`
+    }
+
     pool.query(queryText, [req.params.id])
-    .then(result => res.sendStatus(200))
-    .catch(err => {
-        console.log("Error on /top/:id PUT in @toplist.router", err);
-        res.sendStatus(500);
-    });
+        .then(result => res.sendStatus(200))
+        .catch(err => {
+            console.log("Error on /top/:id PUT in @toplist.router", err);
+            res.sendStatus(500);
+        });
 });
 
 module.exports = router;
