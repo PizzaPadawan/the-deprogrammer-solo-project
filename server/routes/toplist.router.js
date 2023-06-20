@@ -72,8 +72,24 @@ router.get('/top/:id', rejectUnauthenticated, (req, res) => {
     });
 });
 
-router.put('/top/:id', rejectUnauthenticated, (req, res) => {
-    const queryText = ``
-})
+router.put('/hide/:id', rejectUnauthenticated, (req, res) => {
+    const queryText = `UPDATE "toplist" SET "hidden"=TRUE WHERE "id"=$1;`
+    pool.query(queryText, [req.params.id])
+    .then(result => res.sendStatus(200))
+    .catch(err => {
+        console.log("Error on /top/:id PUT in @toplist.router", err);
+        res.sendStatus(500);
+    });
+});
+
+router.put('/unhide/:id', rejectUnauthenticated, (req, res) => {
+    const queryText = `UPDATE "toplist" SET "hidden"=FALSE WHERE "id"=$1;`
+    pool.query(queryText, [req.params.id])
+    .then(result => res.sendStatus(200))
+    .catch(err => {
+        console.log("Error on /top/:id PUT in @toplist.router", err);
+        res.sendStatus(500);
+    });
+});
 
 module.exports = router;
