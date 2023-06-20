@@ -92,6 +92,7 @@ router.put('/hidden/:id', rejectUnauthenticated, (req, res) => {
         });
 });
 
+// put route to allow users to add notes to toplist items
 router.put('/notes/:id', rejectUnauthenticated, (req, res) => {
     const queryText = `UPDATE "toplist" SET "notes"=$1 WHERE "id"=$2;`
 
