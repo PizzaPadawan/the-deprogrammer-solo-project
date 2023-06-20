@@ -37,12 +37,12 @@ router.delete('/:user_id', rejectUnauthenticated, (req, res) => {
 
 // GET req to display upcoming 
 router.get('/panels', rejectUnauthenticated, (req, res) => {
-    const queryText = `SELECT "masterlist"."artist", STRING_AGG(DISTINCT "user"."username", ', ') AS "users", "toplist"."playlist_id", "masterlist"."recording_date" 
-    FROM "playlist"
-    JOIN "toplist" ON "toplist"."playlist_id"="playlist"."id"
-    JOIN "masterlist" ON "masterlist"."playlist_id"="playlist"."id"
+    const queryText = `SELECT "playlist_id", "artist", STRING_AGG(DISTINCT "user"."username", ', ') AS "users", "masterlist"."recording_date" 
+    FROM "masterlist"
+    JOIN "toplist" ON "toplist"."masterlist_id"="masterlist"."id"
+    JOIN "playlist" ON "masterlist"."playlist_id"="playlist"."id"
     JOIN "user" ON "user"."id"="toplist"."user_id"
-    GROUP BY "toplist"."playlist_id", "artist", "recording_date"
+    GROUP BY "masterlist"."playlist_id", "artist", "recording_date"
     HAVING $1 = ANY(ARRAY_AGG("user"."id"));`
 
     pool.query(queryText, [req.user.id])
@@ -50,7 +50,8 @@ router.get('/panels', rejectUnauthenticated, (req, res) => {
         res.send(result.rows);
     })
     .catch(err => {
-        console.log("Error on /panels GET in @toplist.router", err)
+        console.log("Error on /panels GET in @toplist.router", err);
+        res.sendStatus(500);
     });
 });
 
