@@ -3,11 +3,6 @@ const pool = require('../modules/pool');
 const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware')
 
-
-// router.get('/', (req, res) => {
-
-// });
-
 // admin POST route to add new user 
 router.post('/:list_id', rejectUnauthenticated, (req, res) => {
     const queryText = `INSERT INTO "toplist"("playlist_id","user_id")
@@ -21,6 +16,7 @@ router.post('/:list_id', rejectUnauthenticated, (req, res) => {
         });
 });
 
+// admin DELETE route to remove user from a panel
 router.delete('/:user_id', rejectUnauthenticated, (req, res) => {
     const queryText = `DELETE FROM "toplist" WHERE "user_id"=$1 AND "playlist_id"=$2;`
     pool.query(queryText, [req.params.user_id, req.body.playlist_id])
@@ -28,6 +24,25 @@ router.delete('/:user_id', rejectUnauthenticated, (req, res) => {
     .catch(err => {
         console.log("Error on user DELETE in @toplist.router", err);
     })
-})
+});
+
+// GET req to display upcoming 
+router.get('/panels', rejectUnauthenticated, (req, res) => {
+    const queryText = `SELECT "masterlist"."artist", STRING_AGG(DISTINCT "user"."username", ', ') AS "users", "toplist"."playlist_id", "masterlist"."recording_date" 
+    FROM "playlist"
+    JOIN "toplist" ON "toplist"."playlist_id"="playlist"."id"
+    JOIN "masterlist" ON "masterlist"."playlist_id"="playlist"."id"
+    JOIN "user" ON "user"."id"="toplist"."user_id"
+    GROUP BY "toplist"."playlist_id", "artist", "recording_date"
+    HAVING $1 = ANY(ARRAY_AGG("user"."id"));`
+
+    pool.query(queryText, [req.user.id])
+    .then(result => {
+        res.send(result.rows);
+    })
+    .catch(err => {
+        console.log("Error on /panels GET in @toplist.router", err)
+    });
+});
 
 module.exports = router;
