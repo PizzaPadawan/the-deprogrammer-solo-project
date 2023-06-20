@@ -5,10 +5,14 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 
 // admin POST route to add new user 
 router.post('/:list_id', rejectUnauthenticated, (req, res) => {
-    const queryText = `INSERT INTO "toplist"("playlist_id","user_id")
-            SELECT "playlist"."id", "user"."id" FROM "user","playlist" WHERE "playlist"."id"=$1 AND "username"=$2;`
+    const queryText = `INSERT INTO "toplist" ("masterlist_id", "user_id")
+    SELECT "masterlist"."id", "user"."id"
+    FROM "masterlist"
+    JOIN "playlist" ON "masterlist"."playlist_id" = "playlist"."id"
+    JOIN "user" ON "user"."username" = $1
+    WHERE "playlist"."id" = $2;`
 
-    pool.query(queryText, [req.params.list_id, req.body.username])
+    pool.query(queryText, [req.body.username, req.params.list_id])
         .then(response => res.sendStatus(201))
         .catch(err => {
             console.log("Error on user POST in @toplist.router", err);
@@ -18,7 +22,12 @@ router.post('/:list_id', rejectUnauthenticated, (req, res) => {
 
 // admin DELETE route to remove user from a panel
 router.delete('/:user_id', rejectUnauthenticated, (req, res) => {
-    const queryText = `DELETE FROM "toplist" WHERE "user_id"=$1 AND "playlist_id"=$2;`
+    const queryText = `DELETE FROM "toplist"
+    USING "masterlist"
+    JOIN "playlist" ON "playlist"."id"="masterlist"."playlist_id"
+    WHERE "toplist"."masterlist_id"="masterlist"."id"
+    AND "playlist"."id"=$1
+    AND "toplist"."user_id"=$2;`
     pool.query(queryText, [req.params.user_id, req.body.playlist_id])
     .then(response => res.sendStatus(204))
     .catch(err => {
@@ -45,13 +54,14 @@ router.get('/panels', rejectUnauthenticated, (req, res) => {
     });
 });
 
+// get request to retreive toplist to be edited by user and used in gameplay
 router.get('/top/:id', rejectUnauthenticated, (req, res) => {
-    const queryText = `SELECT "track","album","artist","toplist"."playlist_id","toplist"."hidden" FROM "masterlist"
+    const queryText = `SELECT "track","album","artist","toplist"."playlist_id","toplist"."hidden","recording_date","is_played" FROM "masterlist"
     JOIN "playlist" ON "playlist"."id"="masterlist"."playlist_id"
     JOIN "toplist" ON "toplist"."playlist_id"="playlist"."id"
     JOIN "user" ON "user"."id"="toplist"."user_id"
     WHERE "toplist"."playlist_id" = $1
-    GROUP BY "track","album","artist","toplist"."playlist_id","toplist"."hidden"
+    GROUP BY "track","album","artist","toplist"."playlist_id","toplist"."hidden","recording_date","is_played"
     ORDER BY "album";`
     pool.query(queryText, [req.params.id])
     .then(result => {
