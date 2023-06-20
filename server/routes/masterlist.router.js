@@ -17,8 +17,8 @@ router.put('/:playlist_id', rejectUnauthenticated, (req, res) => {
 
 router.get('/:playlist_id', rejectUnauthenticated, (req, res) => {
   const queryText = `SELECT * FROM "masterlist" 
-  WHERE "playlist_id"=$1
-  ORDER BY "album";`
+  WHERE "playlist_id"=22 
+  ORDER BY "is_played" DESC, "album";`
 
   pool.query(queryText, [req.params.playlist_id])
     .then(result => {
