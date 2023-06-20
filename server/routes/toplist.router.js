@@ -45,4 +45,20 @@ router.get('/panels', rejectUnauthenticated, (req, res) => {
     });
 });
 
+router.get('/top/:id', rejectUnauthenticated, (req, res) => {
+    const queryText = `SELECT "track","album","artist","toplist"."playlist_id","toplist"."hidden" FROM "masterlist"
+    JOIN "playlist" ON "playlist"."id"="masterlist"."playlist_id"
+    JOIN "toplist" ON "toplist"."playlist_id"="playlist"."id"
+    JOIN "user" ON "user"."id"="toplist"."user_id"
+    WHERE "toplist"."playlist_id" = $1
+    GROUP BY "track","album","artist","toplist"."playlist_id","toplist"."hidden"
+    ORDER BY "album";`
+    pool.query(queryText, [req.params.id])
+    .then(result => {
+        res.send(result.rows);
+    }).catch(err => {
+        console.log("Error on /top/id GET in @toplist.router", err);
+    });
+});
+
 module.exports = router;
