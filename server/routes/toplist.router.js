@@ -35,6 +35,26 @@ router.delete('/:user_id', rejectUnauthenticated, (req, res) => {
         })
 });
 
+// GET req to display users on selected panel for admin panel editor
+router.get('/panels/:playlist_id', rejectUnauthenticated, (req,res) => {
+    const queryText = `SELECT "playlist_id", "user"."username"
+    FROM "masterlist"
+    JOIN "toplist" ON "toplist"."masterlist_id"="masterlist"."id"
+    JOIN "playlist" ON "masterlist"."playlist_id"="playlist"."id"
+    JOIN "user" ON "user"."id"="toplist"."user_id"
+    WHERE "playlist_id"=$1
+    GROUP BY "masterlist"."playlist_id", "user"."username";`
+
+    pool.query(queryText, [req.params.playlist_id])
+        .then(result => {
+            res.send(result.rows);
+        })
+        .catch(err => {
+            console.log("Error on /panels/:playlist_id GET in @toplist.router", err);
+            res.sendStatus(500);
+        });
+})
+
 // GET req to display upcoming panels for logged in user
 router.get('/panels', rejectUnauthenticated, (req, res) => {
     const queryText = `SELECT "playlist_id", "artist", STRING_AGG(DISTINCT "user"."username", ', ') AS "users", "masterlist"."recording_date" 
@@ -56,7 +76,7 @@ router.get('/panels', rejectUnauthenticated, (req, res) => {
 });
 
 // get request to retreive toplist to be viewed / edited by user and used in gameplay
-router.get('/top/:id', rejectUnauthenticated, (req, res) => {
+router.get('/top/:playlist_id', rejectUnauthenticated, (req, res) => {
     const queryText = `SELECT "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","notes","recording_date","is_played" FROM "masterlist"
     JOIN "playlist" ON "playlist"."id"="masterlist"."playlist_id"
     JOIN "toplist" ON "toplist"."masterlist_id"="masterlist"."id"
@@ -64,7 +84,7 @@ router.get('/top/:id', rejectUnauthenticated, (req, res) => {
     WHERE "masterlist"."playlist_id"=$1 AND "toplist"."user_id"=$2
     GROUP BY "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","notes","recording_date","is_played"
     ORDER BY "album";`
-    pool.query(queryText, [req.params.id, req.user.id])
+    pool.query(queryText, [req.params.playlist_id, req.user.id])
         .then(result => {
             res.send(result.rows);
         }).catch(err => {
