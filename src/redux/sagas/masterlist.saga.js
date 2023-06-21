@@ -17,6 +17,7 @@ function* postMasterlist(action){
 function* fetchMasterlist(action){
     try {
         // axios.get retrieves masterlist by playlist_id
+        // action.payload:{playlist_id}
         const response = axios.get(`/masterlist/${action.payload.playlist_id}`);
         // yield put sends response.data to masterlist.reducer to be stored in Redux
         yield put({type: 'SET_MASTERLIST', payload: response.data});

@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 
 function panelReducer(state = [], action){
     switch (action.type) {
-        case "SET_PANEL":
+        case "SET_PANELS":
             return action.payload;
         default:
             return state;
@@ -29,5 +29,6 @@ function panelUserReducer(state=[],action){
 
 export default combineReducers({
     panelReducer,
-    toplistReducer
+    toplistReducer,
+    panelUserReducer
 })

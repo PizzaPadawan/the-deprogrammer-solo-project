@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
   errors, // contains registrationMessage and loginMessage
   user, // will have an id and username if someone is logged in
   masterlist, //sets currently displayed masterlist
-  toplist, //panel details, panel users, currently selected user toplist
+  toplist //panel details, panel users, currently selected user toplist
 });
 
 export default rootReducer;
