@@ -18,6 +18,15 @@ function toplistReducer(state = [], action){
     }
 }
 
+function panelUserReducer(state=[],action){
+    switch(action.type){
+        case "SET_PANEL_USERS":
+            return action.payload;
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
     panelReducer,
     toplistReducer

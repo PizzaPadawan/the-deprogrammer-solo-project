@@ -77,12 +77,13 @@ router.get('/panels', rejectUnauthenticated, (req, res) => {
 
 // get request to retreive toplist to be viewed / edited by user and used in gameplay
 router.get('/top/:playlist_id', rejectUnauthenticated, (req, res) => {
-    const queryText = `SELECT "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","notes","recording_date","is_played" FROM "masterlist"
+    const queryText = `SELECT "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","notes","recording_date","is_played","playlist_id" 
+    FROM "masterlist"
     JOIN "playlist" ON "playlist"."id"="masterlist"."playlist_id"
     JOIN "toplist" ON "toplist"."masterlist_id"="masterlist"."id"
     JOIN "user" ON "user"."id"="toplist"."user_id"
     WHERE "masterlist"."playlist_id"=$1 AND "toplist"."user_id"=$2
-    GROUP BY "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","notes","recording_date","is_played"
+    GROUP BY "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","notes","recording_date","is_played","playlist_id"
     ORDER BY "album";`
     pool.query(queryText, [req.params.playlist_id, req.user.id])
         .then(result => {
@@ -94,7 +95,7 @@ router.get('/top/:playlist_id', rejectUnauthenticated, (req, res) => {
 
 // user function to mark toplist.hidden=TRUE for a given item, removing it from their toplist
 // or switch it back to FALSE if the user would like to bring it back into their toplist
-router.put('/hidden/:id', rejectUnauthenticated, (req, res) => {
+router.put('/hidden/:toplist_id', rejectUnauthenticated, (req, res) => {
 
     let queryText = ``
 
@@ -113,10 +114,10 @@ router.put('/hidden/:id', rejectUnauthenticated, (req, res) => {
 });
 
 // put route to allow users to add notes to toplist items
-router.put('/notes/:id', rejectUnauthenticated, (req, res) => {
+router.put('/notes/:toplist_id', rejectUnauthenticated, (req, res) => {
     const queryText = `UPDATE "toplist" SET "notes"=$1 WHERE "id"=$2;`
 
-    pool.query(queryText, [req.body.notes, req.params.id])
+    pool.query(queryText, [req.body.notes, req.params.toplist_id])
     .then(result => res.sendStatus(201))
     .catch(err => {
         console.log("Error on /top/:id PUT in @toplist.router", err);
