@@ -14,11 +14,12 @@ function UserPage() {
 
   useEffect(() => {
     dispatch({ type: 'FETCH_PANELS' });
-    // dispatch({ type: 'FETCH_TOPLIST', payload: { playlist_id: panels[0].playlist_id } })
   }, []);
+  
 
-  //local state
-  // const [currentArtist, setCurrentArtist] = useState(panels[0].playlist_id || '')
+  const fetchToplist = (playlist_id) => {
+    dispatch({type: 'FETCH_TOPLIST', payload: {playlist_id}})
+  }
 
   return (
     <div className="container">
@@ -36,7 +37,7 @@ function UserPage() {
         <tbody>
           {panels.map(panel => {
             return (
-              <tr key={panel.playlist_id} >
+              <tr key={panel.playlist_id} onClick={() => fetchToplist(panel.playlist_id)}>
                 <td>{panel.artist}</td>
                 <td>{panel.users}</td>
                 <td>{moment(panel.recording_date).format('MM/DD/YYYY')}</td>
@@ -46,8 +47,8 @@ function UserPage() {
         </tbody>
       </table>
       <br />
-      {/* <h3>{panels[currentArtist].artist}</h3>
-      <h4>{moment(panels[currentArtist].recording_date).format('MM/DD/YYYY')}</h4> */}
+      <h4>{toplist.length > 0 && toplist[0].artist}</h4>
+      <h4>{toplist.length > 0 && moment(toplist[0].recording_date).format('MM/DD/YYYY')}</h4>
       <table>
         <thead>
           <tr>
@@ -56,14 +57,15 @@ function UserPage() {
           </tr>
         </thead>
         <tbody>
-          {/* {toplist.map(track => {
+          {toplist && 
+          toplist.map(track => {
               return (
                 <tr key={track.id}>
                   <td>{track.track}</td>
                   <td>{track.album}</td>
                 </tr>
               )
-            })} */}
+            })}
         </tbody>
       </table>
       <LogOutButton className="btn" />
