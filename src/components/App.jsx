@@ -19,6 +19,7 @@ import InfoPage from './Pages/InfoPage/InfoPage';
 import LandingPage from './Pages/LandingPage/LandingPage';
 import LoginPage from './Pages/LoginPage/LoginPage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
+import PanelEditor from './Pages/PanelEditor/PanelEditor';
 
 import './App.css';
 
@@ -61,11 +62,13 @@ function App() {
           </ProtectedRoute>
 
           <ProtectedRoute
-            // logged in shows InfoPage else shows LoginPage
+            // admin shows PanelEditor else shows UserPage
             exact
-            path="/info"
+            path="/panel-editor"
           >
-            <InfoPage />
+            {user.is_admin
+            ?<PanelEditor />
+            :<Redirect to="/user"/>}
           </ProtectedRoute>
 
           <Route

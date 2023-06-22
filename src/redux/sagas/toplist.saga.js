@@ -93,4 +93,5 @@ export default function* toplistSaga() {
     yield takeEvery("ADD_USER", addUser);
     yield takeEvery("REMOVE_USER", removeUser);
     yield takeEvery("TRACK_STATUS", trackStatus);
+    yield takeEvery("EDIT_NOTES", editNotes);
 }

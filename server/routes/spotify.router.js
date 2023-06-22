@@ -10,21 +10,23 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 let accessToken = {}
 
 router.get('/', rejectUnauthenticated, async (req, res) => {
-    try {
-        //sending a POST request with our Client ID and Client Secret to retreive our access code.
-        const response = await axios.post('https://accounts.spotify.com/api/token',
-            `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
-        //assigning new access code
-        accessToken = response.data
-        console.log("*robot voice* ACCESS. GRANTED.", console.log(req.user));
-        res.sendStatus(200);
-    } catch (error) {
-        console.log("Error retreiving Spotify access token", error)
-    }
+    if (req.user.isAdmin === true) {
+        try {
+            //sending a POST request with our Client ID and Client Secret to retreive our access code.
+            const response = await axios.post('https://accounts.spotify.com/api/token',
+                `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            //assigning new access code
+            accessToken = response.data
+            console.log("*robot voice* ACCESS. GRANTED.", console.log(req.user));
+            res.sendStatus(200);
+        } catch (error) {
+            console.log("Error retreiving Spotify access token", error)
+        }
+    } else return res.sendStatus(403);
 });
 
 router.post('/', rejectUnauthenticated, async (req, res) => {
