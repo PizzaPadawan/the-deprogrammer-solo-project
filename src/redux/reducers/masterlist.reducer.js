@@ -1,6 +1,5 @@
-import { combineReducers } from "redux";
 
-const masterlistReducer = (state=[], action) => {
+function masterlistReducer(state = [], action) {
     switch (action.type) {
         case "SET_MASTERLIST":
             return action.payload;
@@ -9,6 +8,4 @@ const masterlistReducer = (state=[], action) => {
     }
 }
 
-export default combineReducers({
-    masterlistReducer
-})
+export default masterlistReducer;

@@ -14,9 +14,9 @@ router.put('/:playlist_id', rejectUnauthenticated, (req, res) => {
       res.sendStatus(500);
     });
 });
-
 // retreive masterlist data for admin panel editor and gameplay
 router.get('/:playlist_id', rejectUnauthenticated, (req, res) => {
+
   const queryText = `SELECT * FROM "masterlist" 
   WHERE "playlist_id"=$1 
   ORDER BY "is_played" DESC, "album";`

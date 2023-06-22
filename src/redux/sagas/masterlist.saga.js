@@ -8,6 +8,7 @@ function* postMasterlist(action){
         yield axios.get('/api/spotify/');
         // axios.post adds playlist data to DB
         // sends action.payload:{spotify_id(REQUIRED), recording_date(OPTIONAL)}
+        console.log(action.payload)
         yield axios.post('/api/spotify/', action.payload);
     } catch (error) {
         console.log("Error on pullMasterlist saga", error);
@@ -18,8 +19,10 @@ function* fetchMasterlist(action){
     try {
         // axios.get retrieves masterlist by playlist_id
         // action.payload:{playlist_id}
-        const response = axios.get(`/masterlist/${action.payload.playlist_id}`);
+        console.log(action.payload)
+        const response = yield axios.get(`/api/masterlist/${action.payload.playlist_id}`);
         // yield put sends response.data to masterlist.reducer to be stored in Redux
+        console.log(response)
         yield put({type: 'SET_MASTERLIST', payload: response.data});
     } catch (error) {
         console.log("Error on fetchMasterlist saga", error);
@@ -31,7 +34,7 @@ function* updateRecordingDate(action){
     try {
         // axios.put to playlist_id updates the masterlist items associated with specified playlist_id
         // action.payload:{playlist_id, recording_date}
-        yield axios.put(`masterlist/${action.payload.playlist_id}`, action.payload)
+        yield axios.put(`/api/masterlist/${action.payload.playlist_id}`, action.payload)
         // yield put calls fetchMasterlist function to update currently displayed masterlist with new date
         yield put({type: 'FETCH_MASTERLIST', payload: action.payload});
     } catch (error) {

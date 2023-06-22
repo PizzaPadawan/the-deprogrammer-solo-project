@@ -10,7 +10,7 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 let accessToken = {}
 
 router.get('/', rejectUnauthenticated, async (req, res) => {
-    if (req.user.isAdmin === true) {
+    if (req.user.is_admin) {
         try {
             //sending a POST request with our Client ID and Client Secret to retreive our access code.
             const response = await axios.post('https://accounts.spotify.com/api/token',
@@ -43,7 +43,7 @@ router.post('/', rejectUnauthenticated, async (req, res) => {
         // create new playlist entry
         const result = await pool.query(`
             INSERT INTO "playlist" ("spotify_id")
-            VALUES ($1, $2)
+            VALUES ($1)
             RETURNING "id";`, [req.body.spotify_id]);
 
         // query text for insert statements in for loop:
