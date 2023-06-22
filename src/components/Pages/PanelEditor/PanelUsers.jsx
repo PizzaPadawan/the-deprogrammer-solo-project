@@ -19,6 +19,7 @@ export default function PanelUsers({currentList}) {
         }
         console.log({currentList, username})
         dispatch({type: "ADD_USER", payload: {playlist_id: currentList, username} })
+        setUsername('')
     }
 
     const removeUser = (user_id) => {

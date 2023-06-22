@@ -9,7 +9,6 @@ function* fetchPanels() {
         console.log(response.data)
         // SETTER function to store response.data in Redux
         yield put({ type: "SET_PANELS", payload: response.data });
-        yield put({ type: "FETCH_TOPLIST", payload: response.data[0] })
     } catch (error) {
         console.log("Error on fetchPanels toplist saga", error);
     }

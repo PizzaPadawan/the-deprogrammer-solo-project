@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   HashRouter as Router,
   Redirect,
@@ -15,11 +15,11 @@ import ProtectedRoute from './Shared/ProtectedRoute/ProtectedRoute';
 
 import AboutPage from './Pages/AboutPage/AboutPage';
 import UserPage from './Pages/UserPage/UserPage';
-import InfoPage from './Pages/InfoPage/InfoPage';
 import LandingPage from './Pages/LandingPage/LandingPage';
 import LoginPage from './Pages/LoginPage/LoginPage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
 import PanelEditor from './Pages/PanelEditor/PanelEditor';
+import ListEditor from './Pages/ListEditor/ListEditor';
 
 import './App.css';
 
@@ -28,9 +28,12 @@ function App() {
 
   const user = useSelector(store => store.user);
 
+  //local state
+  const [currentList, setCurrentList] = useState('');
+
   useEffect(() => {
     dispatch({ type: 'FETCH_USER' });
-  }, [dispatch]);
+  }, []);
 
   return (
     <Router>
@@ -67,8 +70,14 @@ function App() {
             path="/panel-editor"
           >
             {user.is_admin
-            ?<PanelEditor />
-            :<Redirect to="/user"/>}
+              ? <PanelEditor currentList={currentList} setCurrentList={setCurrentList} />
+              : <Redirect to="/list-editor" />}
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/list-editor">
+            <ListEditor currentList={currentList} setCurrentList={setCurrentList} />
           </ProtectedRoute>
 
           <Route
