@@ -45,7 +45,6 @@ export default function MasterList({currentList, setCurrentList}) {
                 toplist[0].recording_date
                 ? <h4>{moment(toplist[0].recording_date).format('MM/DD/YYYY')}</h4>
                 : <input
-
                     type="text" />}
             <table>
                 <thead>

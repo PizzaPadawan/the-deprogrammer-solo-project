@@ -18,8 +18,15 @@ export default function PanelUsers({currentList}) {
             return;
         }
         console.log({currentList, username})
-        dispatch({type: "ADD_USER", payload: {list_id: currentList, username} })
-        dispatch({type: 'FETCH_PANEL_USERS', payload: {playlist_id: currentList}})
+        dispatch({type: "ADD_USER", payload: {playlist_id: currentList, username} })
+    }
+
+    const removeUser = (user_id) => {
+        if(!currentList){
+            return;
+        }
+        console.log({user_id, playlist_id: currentList});
+        dispatch({type: "REMOVE_USER", payload: {user_id, playlist_id: currentList}});
     }
     
 
@@ -49,7 +56,9 @@ export default function PanelUsers({currentList}) {
                             return (
                                 <tr key={user.id}>
                                     <td>{user.username}</td>
-                                    <td><button>Remove</button></td>
+                                    <td><button
+                                    onClick={() => removeUser(user.id)}
+                                    >Remove</button></td>
                                 </tr>
                             );
                         })}

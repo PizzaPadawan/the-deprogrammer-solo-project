@@ -4,7 +4,7 @@ const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware')
 
 // admin POST route to add new user 
-router.post('/:list_id', rejectUnauthenticated, (req, res) => {
+router.post('/:playlist_id', rejectUnauthenticated, (req, res) => {
     const queryText = `INSERT INTO "toplist" ("masterlist_id", "user_id")
     SELECT "masterlist"."id", "user"."id"
     FROM "masterlist"
@@ -12,7 +12,7 @@ router.post('/:list_id', rejectUnauthenticated, (req, res) => {
     JOIN "user" ON "user"."username" = $1
     WHERE "playlist"."id" = $2;`
 
-    pool.query(queryText, [req.body.username, req.params.list_id])
+    pool.query(queryText, [req.body.username, req.params.playlist_id])
         .then(response => res.sendStatus(201))
         .catch(err => {
             console.log("Error on user POST in @toplist.router", err);
@@ -28,6 +28,8 @@ router.delete('/:user_id', rejectUnauthenticated, (req, res) => {
     WHERE "toplist"."masterlist_id"="masterlist"."id"
     AND "playlist"."id"=$1
     AND "toplist"."user_id"=$2;`
+
+    console.log(req.body.playlist_id, req.params)
     pool.query(queryText, [req.body.playlist_id, req.params.user_id])
         .then(response => res.sendStatus(204))
         .catch(err => {

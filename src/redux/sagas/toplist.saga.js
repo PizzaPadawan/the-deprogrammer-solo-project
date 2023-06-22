@@ -9,7 +9,7 @@ function* fetchPanels() {
         console.log(response.data)
         // SETTER function to store response.data in Redux
         yield put({ type: "SET_PANELS", payload: response.data });
-        yield put({ type: "FETCH_TOPLIST", payload: response.data[0]})
+        yield put({ type: "FETCH_TOPLIST", payload: response.data[0] })
     } catch (error) {
         console.log("Error on fetchPanels toplist saga", error);
     }
@@ -41,10 +41,11 @@ function* fetchToplist(action) {
 function* addUser(action) {
     try {
         // posts a new toplist for user based on list referenced and username added
-        // action.payload:{list_id, username}
-        yield axios.post(`/api/toplist/${action.payload.list_id}`, action.payload)
-        // refresh panel details
-        yield put({ type: "FETCH_PANELS" });
+        // action.payload:{playlist_id, username}
+        console.log(action.payload)
+        yield axios.post(`/api/toplist/${action.payload.playlist_id}`, action.payload)
+        // refresh panel user details
+        yield put({type: 'FETCH_PANEL_USERS', payload: {playlist_id: action.payload.playlist_id}});
     } catch (error) {
         console.log("Error on addUser toplist saga", error);
     }
@@ -54,9 +55,10 @@ function* removeUser(action) {
     try {
         // DELETE to remove user from panel based on user_id and playlist_id
         // action.payload{ user_id, playlist_id }
-        yield axios.delete(`/api/toplist/${action.payload.user_id}`, action.payload)
-        // refresh panel details
-        yield put({ type: "FETCH_PANELS" })
+        console.log(action.payload);
+        yield axios.delete(`/api/toplist/${action.payload.user_id}`, {data: action.payload})
+        // refresh panel user details
+        yield put({type: 'FETCH_PANEL_USERS', payload: {playlist_id: action.payload.playlist_id}});
     } catch (error) {
         console.log("Error on removeUser toplist saga", error);
     }
@@ -68,19 +70,19 @@ function* trackStatus(action) {
         // action.payload:{toplist_id, switch: "HIDE" || "SHOW", playlist_id}
         yield axios.put(`/api/toplist/hidden/${action.payload.toplist_id}`, action.payload);
         // refresh toplist
-        yield put({type: "FETCH_TOPLIST", payload: action.payload.playlist_id})
+        yield put({ type: "FETCH_TOPLIST", payload: action.payload.playlist_id })
     } catch (error) {
         console.log("Error on trackHidden toplist saga", error);
     }
 }
 
-function* editNotes(action){
+function* editNotes(action) {
     try {
         //PUT to change the notes on a specific toplist_id
         //action.payload{notes, toplist_id, playlist_id}
         yield axios.put(`/api/toplist/notes/${action.payload.toplist_id}`, action.payload);
         // refresh toplist
-        yield put({type: "FETCH_TOPLIST", payload: action.payload.playlist_id})
+        yield put({ type: "FETCH_TOPLIST", payload: action.payload.playlist_id })
     } catch (error) {
         console.log("Error on editNotes toplist saga", error);
     }
