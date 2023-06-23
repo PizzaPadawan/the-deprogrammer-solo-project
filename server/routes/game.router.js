@@ -64,8 +64,9 @@ router.delete('/discussion/:playlist_id', rejectUnauthenticated, async (req, res
 });
 
 // GET route to display current tallies for gameplay
-router.get('/tallies/:masterlist_id', rejectUnauthenticated, (req, res) => {
-    const masterlistId = req.params.masterlist_id;
+router.get('/tallies/:playlist_id', rejectUnauthenticated, (req, res) => {
+    const playlistId = req.params.playlist_id;
+    console.log(playlistId)
 
     const queryText = `
     SELECT
@@ -88,7 +89,7 @@ router.get('/tallies/:masterlist_id', rejectUnauthenticated, (req, res) => {
     JOIN
         "user" ON "toplist"."user_id" = "user"."id"
     WHERE
-        "masterlist"."id" = $1
+        "masterlist"."playlist_id" = $1
         AND "masterlist"."is_played" = TRUE
     GROUP BY
         "track",
@@ -100,13 +101,13 @@ router.get('/tallies/:masterlist_id', rejectUnauthenticated, (req, res) => {
         "album";
     `;
 
-    pool.query(queryText, [masterlistId])
+    pool.query(queryText, [playlistId])
         .then(result => {
             const tallies = result.rows;
             res.send(tallies);
         })
         .catch(error => {
-            console.error('Error fetching tallies:', error);
+            console.error('Error on /tallies/playlist_id in game.router', error);
             res.sendStatus(500);
         });
 });

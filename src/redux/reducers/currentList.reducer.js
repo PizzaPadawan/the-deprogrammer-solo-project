@@ -1,10 +1,8 @@
-function gameReducer(state = [], action) {
+export default function currentListReducer(state = 0, action) {
     switch (action.type) {
-        case "SET_GAMELIST":
+        case "SET_CURRENT_LIST":
             return action.payload;
         default:
             return state;
     }
 }
-
-export default gameReducer;

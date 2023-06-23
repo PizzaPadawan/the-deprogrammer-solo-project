@@ -28,9 +28,17 @@ function App() {
   const dispatch = useDispatch();
 
   const user = useSelector(store => store.user);
+  const currentList = useSelector(store => store.currentList)
+
+  const setCurrentList = (playlistId) => {
+    dispatch({
+      type: "SET_CURRENT_LIST",
+      payload: playlistId
+    })
+  }
 
   //local state
-  const [currentList, setCurrentList] = useState('');
+  // const [currentList, setCurrentList] = useState('');
 
   useEffect(() => {
     dispatch({ type: 'FETCH_USER' });

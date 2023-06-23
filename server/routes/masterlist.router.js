@@ -34,4 +34,15 @@ router.get('/:playlist_id', rejectUnauthenticated, (req, res) => {
   } else res.sendStatus(403);
 });
 
+let currentList = 0;
+
+router.post('/', rejectUnauthenticated, (req, res) => {
+    currentList = req.body.playlist_id;
+    res.sendStatus(201);
+})
+
+router.get('/', rejectUnauthenticated, (req,res) => {
+    res.status(200).send(currentList);
+})
+
 module.exports = router;

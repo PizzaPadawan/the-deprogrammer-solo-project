@@ -86,7 +86,7 @@ router.get('/top/:playlist_id', rejectUnauthenticated, (req, res) => {
     JOIN "user" ON "user"."id"="toplist"."user_id"
     WHERE "masterlist"."playlist_id"=$1 AND "toplist"."user_id"=$2
     GROUP BY "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","notes","recording_date","is_played","playlist_id"
-    ORDER BY "hidden" ASC, "album" ASC;`
+    ORDER BY "hidden" ASC, "is_played" ASC, "album" ASC;`
     pool.query(queryText, [req.params.playlist_id, req.user.id])
         .then(result => {
             res.send(result.rows);

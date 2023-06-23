@@ -1,4 +1,3 @@
-
 function masterlistReducer(state = [], action) {
     switch (action.type) {
         case "SET_MASTERLIST":
