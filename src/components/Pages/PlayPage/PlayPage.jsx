@@ -28,6 +28,8 @@ export default function PlayPage({ currentList }) {
         })
     }, []);
 
+    let trashed = false;
+
     // declaring intervalId to use for setInterval function
     // let intervalId;
 
@@ -89,8 +91,7 @@ export default function PlayPage({ currentList }) {
                     {masterlist.length > 0 && masterlist[0].game_mode
                         ? <>
                             <button onClick={() => gameMode("STOP")} >End Game</button>
-                            <button >Discussion</button>
-                            <button >Empty Trash</button>
+                            <button onClick={trashed = true} >Empty Trash</button>
                         </>
                         : <button onClick={() => gameMode("START")} >Start Game</button>
                     }
@@ -147,25 +148,39 @@ export default function PlayPage({ currentList }) {
                                         <td>Album</td>
                                         <td>Total</td>
                                         {panelUsers.length > 0 &&
-                                         panelUsers.map(user => {
-                                            return (
-                                                <td key={user.id}>{user.username}</td>
-                                            )
-                                        })}
+                                            panelUsers.map(user => {
+                                                return (
+                                                    <td key={user.id}>{user.username}</td>
+                                                )
+                                            })}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {gamelist.map(track => {
-                                        return (
-                                            <tr key={track.track} >
-                                                <td>{track.track}</td>
-                                                <td>{track.album}</td>
-                                                {Object.values(track.result).map(result => {
-                                                    return (<td>{result}</td>)
-                                                })}
-                                            </tr>
-                                        )
-                                    })}
+                                    { trashed
+                                        ? gamelist.map(track => {
+                                            return (
+                                                track.result.total > 1 &&
+                                                <tr key={track.track} >
+                                                    <td>{track.track}</td>
+                                                    <td>{track.album}</td>
+                                                    {Object.values(track.result).map(result => {
+                                                        return (<td>{result}</td>)
+                                                    })}
+                                                </tr>
+                                            )
+                                        })
+                                        : gamelist.map(track => {
+                                            return (
+                                                <tr key={track.track} >
+                                                    <td>{track.track}</td>
+                                                    <td>{track.album}</td>
+                                                    {Object.values(track.result).map(result => {
+                                                        return (<td>{result}</td>)
+                                                    })}
+                                                </tr>
+                                            )
+                                        })
+                                    }
                                 </tbody>
                             </table>
                         }
