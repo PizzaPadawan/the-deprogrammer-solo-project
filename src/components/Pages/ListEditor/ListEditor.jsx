@@ -4,10 +4,9 @@ import moment from "moment";
 
 export default function ListEditor({ currentList, setCurrentList }) {
 
-    // useEffect(() => {
-    //     dispatch({ type: 'FETCH_PANELS' });
-    //     console.log("USING EFFECT")
-    // }, []);
+    useEffect(() => {
+        dispatch({ type: 'FETCH_PANELS' });
+      }, []);
 
     // Redux
     const dispatch = useDispatch();
@@ -30,18 +29,23 @@ export default function ListEditor({ currentList, setCurrentList }) {
     }
 
     // updating status of the track on toplist
-    const cutFromTheTeam = (toplist_id, status) => {
+    const trackStatus = (toplist_id, status) => {
+
+        if(!toplist_id || !status || !currentList){
+            alert("Error changing track status");
+            return;
+        }
 
         console.log(toplist_id, status, currentList);
 
-        // dispatch({
-        //     type: "TRACK_STATUS",
-        //     payload: {
-        //         toplist_id,
-        //         switch: status,
-        //         playlist_id: currentList
-        //     }
-        // })
+        dispatch({
+            type: "TRACK_STATUS",
+            payload: {
+                toplist_id,
+                switch: status,
+                playlist_id: currentList
+            }
+        })
     }
 
     // click handler to submit new track notes
@@ -50,12 +54,6 @@ export default function ListEditor({ currentList, setCurrentList }) {
             alert("Please ensure you've selected a track and entered a note before submitting.")
             return;
         }
-
-        console.log({
-            notes: newNotes,
-            toplist_id: selectedTrackID,
-            playlist_id: currentList
-        })
 
         dispatch({
             type: "EDIT_NOTES",
@@ -130,7 +128,7 @@ export default function ListEditor({ currentList, setCurrentList }) {
                                             <td>{track.notes}</td>
                                             <td><button
                                                 value="SHOW"
-                                                onClick={e => cutFromTheTeam(track.id, e.target.value)}
+                                                onClick={e => trackStatus(track.id, e.target.value)}
                                             >PUT ME IN COACH</button></td>
                                         </tr>
                                         : <tr key={track.id}>
@@ -142,7 +140,7 @@ export default function ListEditor({ currentList, setCurrentList }) {
                                             <td>{track.notes}</td>
                                             <td><button
                                                 value="HIDE"
-                                                onClick={e => cutFromTheTeam(track.id, e.target.value)}
+                                                onClick={e => trackStatus(track.id, e.target.value)}
                                             >CUT FROM THE TEAM</button></td>
                                         </tr>
                                 )

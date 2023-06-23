@@ -86,7 +86,7 @@ router.get('/top/:playlist_id', rejectUnauthenticated, (req, res) => {
     JOIN "user" ON "user"."id"="toplist"."user_id"
     WHERE "masterlist"."playlist_id"=$1 AND "toplist"."user_id"=$2
     GROUP BY "toplist"."id","track","album","artist","toplist"."masterlist_id","toplist"."hidden","notes","recording_date","is_played","playlist_id"
-    ORDER BY "album";`
+    ORDER BY "hidden" ASC, "album" ASC;`
     pool.query(queryText, [req.params.playlist_id, req.user.id])
         .then(result => {
             res.send(result.rows);
@@ -98,6 +98,7 @@ router.get('/top/:playlist_id', rejectUnauthenticated, (req, res) => {
 // user function to mark toplist.hidden=TRUE for a given item, removing it from their toplist
 // or switch it back to FALSE if the user would like to bring it back into their toplist
 router.put('/hidden/:toplist_id', rejectUnauthenticated, (req, res) => {
+    console.log(req.body);
 
     let queryText = ``
 
@@ -107,7 +108,7 @@ router.put('/hidden/:toplist_id', rejectUnauthenticated, (req, res) => {
         queryText = `UPDATE "toplist" SET "hidden"=FALSE WHERE "id"=$1;`
     }
 
-    pool.query(queryText, [req.params.id])
+    pool.query(queryText, [req.params.toplist_id])
         .then(result => res.sendStatus(200))
         .catch(err => {
             console.log("Error on /top/:id PUT in @toplist.router", err);

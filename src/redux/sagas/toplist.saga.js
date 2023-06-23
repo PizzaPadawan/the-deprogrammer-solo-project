@@ -65,6 +65,7 @@ function* removeUser(action) {
 
 function* trackStatus(action) {
     try {
+        console.log(action.payload)
         // PUT to switch the is_hidden value of a single item in a user's toplist
         // action.payload:{toplist_id, switch: "HIDE" || "SHOW", playlist_id}
         yield axios.put(`/api/toplist/hidden/${action.payload.toplist_id}`, action.payload);
