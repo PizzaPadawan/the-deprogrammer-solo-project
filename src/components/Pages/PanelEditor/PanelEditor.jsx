@@ -4,15 +4,14 @@ import { useEffect, useState } from "react";
 import MasterList from "./MasterList";
 import PanelUsers from "./PanelUsers";
 
-export default function PanelEditor() {
+export default function PanelEditor({currentList, setCurrentList}) {
 
     useEffect(() => {
         dispatch({ type: "FETCH_PANELS" });
         console.log(currentList)
     }, [])
 
-    //local state
-    const [currentList, setCurrentList] = useState('');
+
 
     // Redux
     const dispatch = useDispatch();

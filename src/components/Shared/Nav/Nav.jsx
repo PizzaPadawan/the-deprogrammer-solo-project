@@ -37,6 +37,9 @@ function Nav() {
                   Panel Editor
                 </Link>
               </>}
+            <Link className="navLink" to="/play">
+              Play
+            </Link>
             <LogOutButton className="navLink" />
           </>
         )}

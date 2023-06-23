@@ -20,6 +20,7 @@ import LoginPage from './Pages/LoginPage/LoginPage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
 import PanelEditor from './Pages/PanelEditor/PanelEditor';
 import ListEditor from './Pages/ListEditor/ListEditor';
+import PlayPage from './Pages/PlayPage/PlayPage';
 
 import './App.css';
 
@@ -78,6 +79,12 @@ function App() {
             exact
             path="/list-editor">
             <ListEditor currentList={currentList} setCurrentList={setCurrentList} />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+          exact
+          path="/play">
+            <PlayPage currentList={currentList} />
           </ProtectedRoute>
 
           <Route
