@@ -69,7 +69,7 @@ function* trackStatus(action) {
         // action.payload:{toplist_id, switch: "HIDE" || "SHOW", playlist_id}
         yield axios.put(`/api/toplist/hidden/${action.payload.toplist_id}`, action.payload);
         // refresh toplist
-        yield put({ type: "FETCH_TOPLIST", payload: action.payload.playlist_id })
+        yield put({ type: "FETCH_TOPLIST", payload: {playlist_id: action.payload.playlist_id} })
     } catch (error) {
         console.log("Error on trackHidden toplist saga", error);
     }
@@ -81,7 +81,7 @@ function* editNotes(action) {
         //action.payload{notes, toplist_id, playlist_id}
         yield axios.put(`/api/toplist/notes/${action.payload.toplist_id}`, action.payload);
         // refresh toplist
-        yield put({ type: "FETCH_TOPLIST", payload: action.payload.playlist_id })
+        yield put({ type: "FETCH_TOPLIST", payload: {playlist_id: action.payload.playlist_id} })
     } catch (error) {
         console.log("Error on editNotes toplist saga", error);
     }

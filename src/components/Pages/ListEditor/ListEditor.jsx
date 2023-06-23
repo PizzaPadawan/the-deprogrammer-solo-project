@@ -17,6 +17,7 @@ export default function ListEditor({ currentList, setCurrentList }) {
     // local state
     const [newNotes, setNewNotes] = useState('');
     const [selectedTrack, setSelectedTrack] = useState('');
+    const [selectedTrackID, setSelectedTrackID] = useState('');
 
     // fetching our new toplist based on id sent
     const fetchToplist = (playlist_id) => {
@@ -43,19 +44,46 @@ export default function ListEditor({ currentList, setCurrentList }) {
         // })
     }
 
+    // click handler to submit new track notes
+    const editNote = () => {
+        if(!selectedTrack || !selectedTrackID || !newNotes){
+            alert("Please ensure you've selected a track and entered a note before submitting.")
+            return;
+        }
+
+        console.log({
+            notes: newNotes,
+            toplist_id: selectedTrackID,
+            playlist_id: currentList
+        })
+
+        dispatch({
+            type: "EDIT_NOTES",
+            payload: {
+                notes: newNotes,
+                toplist_id: selectedTrackID,
+                playlist_id: currentList
+            }
+        })
+    }
+
 
     return (
         <div>
             <div>
                 {selectedTrack
-                    ? <textarea
-                        rows="5"
-                        cols="33"
-                        value={newNotes}
-                        onChange={e => setNewNotes(e.target.value)}
-                        placeholder={`Edit notes for ${selectedTrack}`}
-                        maxLength="1000"
-                    />
+                    ? <>
+                        <textarea
+                            rows="5"
+                            cols="33"
+                            value={newNotes}
+                            onChange={e => setNewNotes(e.target.value)}
+                            placeholder={`Edit notes for ${selectedTrack}`}
+                            maxLength="1000"
+                        />
+                        <button onClick={editNote} >Save</button>
+                        <button onClick={() => {setSelectedTrack(''), setNewNotes('')}}>Cancel</button>
+                    </>
                     : <textarea
                         rows="5"
                         cols="33"
@@ -106,7 +134,10 @@ export default function ListEditor({ currentList, setCurrentList }) {
                                             >PUT ME IN COACH</button></td>
                                         </tr>
                                         : <tr key={track.id}>
-                                            <td onClick={() => setSelectedTrack(track.track)}>{track.track}</td>
+                                            <td 
+                                            onClick={() => {setSelectedTrack(track.track), setSelectedTrackID(track.id)}}
+
+                                            >{track.track}</td>
                                             <td>{track.album}</td>
                                             <td>{track.notes}</td>
                                             <td><button
