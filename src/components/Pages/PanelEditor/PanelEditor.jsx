@@ -1,27 +1,23 @@
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
 
 import MasterList from "./MasterList";
 import PanelUsers from "./PanelUsers";
 
-export default function PanelEditor({currentList, setCurrentList}) {
+export default function PanelEditor() {
 
-    useEffect(() => {
-        dispatch({ type: "FETCH_PANELS" });
-        console.log("effecting your use, dude")
-    }, [])
-
-
+    // useEffect(() => {
+    //     dispatch({ type: "FETCH_PANELS" });
+    //     console.log("effecting your use, dude")
+    // }, [])
 
     // Redux
     const dispatch = useDispatch();
 
-
     return (
         <div>
-            <PanelUsers currentList={currentList}/>
+            <PanelUsers/>
             <br />
-            <MasterList currentList={currentList} setCurrentList={setCurrentList}/>
+            <MasterList />
         </div>
     )
 }

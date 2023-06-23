@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 
-export default function PlayPage({ currentList }) {
+export default function PlayPage() {
 
     // stick 'em up! gimme your WHOLE STORE
     const masterlist = useSelector(store => store.masterlist);
@@ -10,9 +10,11 @@ export default function PlayPage({ currentList }) {
     const toplist = useSelector(store => store.toplist.toplistReducer);
     const gamelist = useSelector(store => store.game);
     const user = useSelector(store => store.user);
+    const currentList = useSelector(store => store.currentList)
 
     const dispatch = useDispatch();
 
+    // local state for Empty Trash button
     const [trashed, setTrashed] = useState(false);
 
     useEffect(() => {
@@ -35,6 +37,7 @@ export default function PlayPage({ currentList }) {
             }
         })
     }, []);
+
     // declaring intervalId to use for setInterval function
     // let intervalId;
 
@@ -91,17 +94,23 @@ export default function PlayPage({ currentList }) {
 
     return (
         <div>
+            {/* admin features */}
             {user.is_admin &&
                 <div>
                     {masterlist.length > 0 && masterlist[0].game_mode
                         ? <>
+                        {/* if our masterlist is populated and game_mode is true, display these.
+                        First button below is the button to Stop the game */}
                             <button onClick={() => gameMode("STOP")} >End Game</button>
+                            {/* this button will set the game list to render only songs with a tally of 2 or more */}
                             <button onClick={() => setTrashed(true)} >Empty Trash</button>
                         </>
+                        // Button to 
                         : <button onClick={() => gameMode("START")} >Start Game</button>
                     }
                 </div>
             }
+            {/* below is everything that will display for users once the admin has marked this masterlist's game_mode as TRUE */}
             {masterlist.length > 0 && masterlist[0].game_mode === true
                 ? <>
                     <div>
@@ -116,8 +125,9 @@ export default function PlayPage({ currentList }) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {toplist.length > 0 && currentList
-                                    ? toplist.map(track => {
+                                 {/* once our toplist store has populated, render it into this table */}
+                                {toplist.length > 0 &&
+                                    toplist.map(track => {
                                         return (
                                             !track.hidden &&
                                             <tr key={track.id}>
@@ -132,12 +142,6 @@ export default function PlayPage({ currentList }) {
                                             </tr>
                                         )
                                     })
-                                    : <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
                                 }
                             </tbody>
                         </table>
@@ -145,6 +149,7 @@ export default function PlayPage({ currentList }) {
                     <br />
                     <br />
                     <div>
+                        {/* once we've added to our gamelist, start rendering our table */}
                         {gamelist.length > 0 &&
                             <table>
                                 <thead>
@@ -161,6 +166,7 @@ export default function PlayPage({ currentList }) {
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {/* if the "Empty Trash" button has been clicked, only items with a total tally greater than 1 will render. */}
                                     { trashed
                                         ? gamelist.map(track => {
                                             return (
@@ -192,8 +198,9 @@ export default function PlayPage({ currentList }) {
                     </div>
                 </>
                 : <>
+                {/* if you visit this page outside of gameplay, this will be the message */}
                     <div>
-                        <h3>Come back on {masterlist.length > 0 && moment(masterlist[0].recording_date).format('MM/DD/YYYY') || "the date of recording"} to play the game!</h3>
+                        <h3>Come back on {masterlist.length > 0 && moment(masterlist[0].recording_date).format('MM/DD/YYYY') || "the date of recording"} to play {masterlist[0].artist || "the game"}!</h3>
                     </div>
                 </>
             }

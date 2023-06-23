@@ -1,11 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 
-export default function PanelUsers({currentList}) {
+export default function PanelUsers() {
 
     // Redux
     const dispatch = useDispatch();
     const panelUsers = useSelector(store => store.toplist.panelUserReducer);
+    const currentList = useSelector(store => store.currentList)
 
     // local state
     const [username, setUsername] = useState('');

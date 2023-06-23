@@ -28,17 +28,6 @@ function App() {
   const dispatch = useDispatch();
 
   const user = useSelector(store => store.user);
-  const currentList = useSelector(store => store.currentList)
-
-  const setCurrentList = (playlistId) => {
-    dispatch({
-      type: "SET_CURRENT_LIST",
-      payload: playlistId
-    })
-  }
-
-  //local state
-  // const [currentList, setCurrentList] = useState('');
 
   useEffect(() => {
     dispatch({ type: 'FETCH_USER' });
@@ -70,7 +59,7 @@ function App() {
             exact
             path="/user"
           >
-            <UserPage currentList={currentList} setCurrentList={setCurrentList} />
+            <UserPage />
           </ProtectedRoute>
 
           <ProtectedRoute
@@ -79,20 +68,20 @@ function App() {
             path="/panel-editor"
           >
             {user.is_admin
-              ? <PanelEditor currentList={currentList} setCurrentList={setCurrentList} />
+              ? <PanelEditor />
               : <Redirect to="/list-editor" />}
           </ProtectedRoute>
 
           <ProtectedRoute
             exact
             path="/list-editor">
-            <ListEditor currentList={currentList} setCurrentList={setCurrentList} />
+            <ListEditor />
           </ProtectedRoute>
 
           <ProtectedRoute
           exact
           path="/play">
-            <PlayPage currentList={currentList} />
+            <PlayPage />
           </ProtectedRoute>
 
           <Route

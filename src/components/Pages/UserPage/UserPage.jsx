@@ -4,22 +4,30 @@ import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 
-function UserPage({currentList, setCurrentList}) {
+function UserPage() {
 
   // instantiate hooks
   const user = useSelector((store) => store.user);
   const panels = useSelector((store) => store.toplist.panelReducer);
   const toplist = useSelector((store) => store.toplist.toplistReducer);
+  const currentList = useSelector(store => store.currentList)
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch({ type: 'FETCH_PANELS' });
   }, []);
-  
 
+  const setCurrentList = (playlistId) => {
+    dispatch({
+      type: "SET_CURRENT_LIST",
+      payload: playlistId
+    })
+  }
+
+  // click listener to fetch the toplist and set our current list to the playlist_id we want
   const fetchToplist = (playlist_id) => {
     setCurrentList(playlist_id)
-    dispatch({type: 'FETCH_TOPLIST', payload: {playlist_id}})
+    dispatch({ type: 'FETCH_TOPLIST', payload: { playlist_id } })
   }
 
   return (
@@ -27,6 +35,7 @@ function UserPage({currentList, setCurrentList}) {
       <h2>Welcome, {user.username}!</h2>
       <br />
       <h3>Upcoming Panels:</h3>
+      <p><em>Click on an artist to show your current toplist!</em></p>
       <table>
         <thead>
           <tr>
@@ -36,6 +45,7 @@ function UserPage({currentList, setCurrentList}) {
           </tr>
         </thead>
         <tbody>
+          {/* mapping over our panels store to show upcoming panels the user is a part of */}
           {panels.map(panel => {
             return (
               <tr key={panel.playlist_id} onClick={() => fetchToplist(panel.playlist_id)}>
@@ -48,18 +58,19 @@ function UserPage({currentList, setCurrentList}) {
         </tbody>
       </table>
       <br />
+      {/* if toplist store is populated, display the Artist and Recording Date of selected panel */}
       <h4>{toplist.length > 0 && toplist[0].artist}</h4>
       <h4>{toplist.length > 0 && moment(toplist[0].recording_date).format('MM/DD/YYYY')}</h4>
-      <table>
-        <thead>
-          <tr>
-            <td>Track</td>
-            <td>Album</td>
-          </tr>
-        </thead>
-        <tbody>
-          {toplist && 
-          toplist.map(track => {
+      {toplist.length > 0 &&
+        <table>
+          <thead>
+            <tr>
+              <td>Track</td>
+              <td>Album</td>
+            </tr>
+          </thead>
+          <tbody>
+            {toplist.map(track => {
               return (
                 <tr key={track.id}>
                   <td>{track.track}</td>
@@ -67,8 +78,9 @@ function UserPage({currentList, setCurrentList}) {
                 </tr>
               )
             })}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      }
       <LogOutButton className="btn" />
     </div>
   );
