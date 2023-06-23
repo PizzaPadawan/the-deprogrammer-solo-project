@@ -63,6 +63,8 @@ export default function ListEditor({ currentList, setCurrentList }) {
                 playlist_id: currentList
             }
         })
+        setNewNotes('');
+        setSelectedTrack('');
     }
 
 

@@ -4,7 +4,7 @@ import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 
-function UserPage() {
+function UserPage({currentList, setCurrentList}) {
 
   // instantiate hooks
   const user = useSelector((store) => store.user);
@@ -18,6 +18,7 @@ function UserPage() {
   
 
   const fetchToplist = (playlist_id) => {
+    setCurrentList(playlist_id)
     dispatch({type: 'FETCH_TOPLIST', payload: {playlist_id}})
   }
 

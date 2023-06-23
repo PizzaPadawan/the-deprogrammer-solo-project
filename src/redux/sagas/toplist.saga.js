@@ -42,7 +42,10 @@ function* addUser(action) {
         // posts a new toplist for user based on list referenced and username added
         // action.payload:{playlist_id, username}
         console.log(action.payload)
-        yield axios.post(`/api/toplist/${action.payload.playlist_id}`, action.payload)
+        const response = yield axios.post(`/api/toplist/${action.payload.playlist_id}`, action.payload)
+        if(response.data === 'Invalid username'){
+            alert(response.data)
+        }
         // refresh panel user details
         yield put({type: 'FETCH_PANEL_USERS', payload: {playlist_id: action.payload.playlist_id}});
     } catch (error) {

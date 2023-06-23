@@ -8,7 +8,7 @@ export default function PanelEditor({currentList, setCurrentList}) {
 
     useEffect(() => {
         dispatch({ type: "FETCH_PANELS" });
-        console.log(currentList)
+        console.log("effecting your use, dude")
     }, [])
 
 

@@ -18,7 +18,6 @@ router.put('/:playlist_id', rejectUnauthenticated, (req, res) => {
 });
 // retreive masterlist data for admin panel editor and gameplay
 router.get('/:playlist_id', rejectUnauthenticated, (req, res) => {
-  if (req.user.is_admin) {
     const queryText = `SELECT * FROM "masterlist" 
   WHERE "playlist_id"=$1 
   ORDER BY "is_played" DESC, "album";`
@@ -31,18 +30,15 @@ router.get('/:playlist_id', rejectUnauthenticated, (req, res) => {
         console.log("Error on /:playlist_id GET in @masterlist.router", err);
         res.sendStatus(500);
       });
-  } else res.sendStatus(403);
 });
 
 let currentList = 0;
 
 router.post('/', rejectUnauthenticated, (req, res) => {
     currentList = req.body.playlist_id;
-    res.sendStatus(201);
-})
-
-router.get('/', rejectUnauthenticated, (req,res) => {
     res.status(200).send(currentList);
 })
+
+
 
 module.exports = router;

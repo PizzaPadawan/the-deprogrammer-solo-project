@@ -13,7 +13,6 @@ export default function PlayPage({ currentList }) {
 
     const dispatch = useDispatch();
 
-
     useEffect(() => {
         dispatch({
             type: "FETCH_MASTERLIST",

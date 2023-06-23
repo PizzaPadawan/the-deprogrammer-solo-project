@@ -70,7 +70,7 @@ function App() {
             exact
             path="/user"
           >
-            <UserPage />
+            <UserPage currentList={currentList} setCurrentList={setCurrentList} />
           </ProtectedRoute>
 
           <ProtectedRoute

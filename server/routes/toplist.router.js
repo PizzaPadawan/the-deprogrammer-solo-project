@@ -5,23 +5,27 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 
 // admin POST route to add new user 
 router.post('/:playlist_id', rejectUnauthenticated, (req, res) => {
+    if(req.user.is_admin){
     const queryText = `INSERT INTO "toplist" ("masterlist_id", "user_id")
     SELECT "masterlist"."id", "user"."id"
     FROM "masterlist"
     JOIN "playlist" ON "masterlist"."playlist_id" = "playlist"."id"
     JOIN "user" ON "user"."username" = $1
-    WHERE "playlist"."id" = $2;`
+    WHERE "playlist"."id" = $2
+    RETURNING *;`
 
     pool.query(queryText, [req.body.username, req.params.playlist_id])
-        .then(response => res.sendStatus(201))
+        .then(response => response[0] ? res.sendStatus(201) : res.send("Invalid username"))
         .catch(err => {
             console.log("Error on user POST in @toplist.router", err);
             res.sendStatus(500);
         });
+    } else res.sendStatus(403);
 });
 
 // admin DELETE route to remove user from a panel
 router.delete('/:user_id', rejectUnauthenticated, (req, res) => {
+    if(req.user.is_admin){
     const queryText = `DELETE FROM "toplist"
     USING "masterlist"
     JOIN "playlist" ON "playlist"."id"="masterlist"."playlist_id"
@@ -35,6 +39,7 @@ router.delete('/:user_id', rejectUnauthenticated, (req, res) => {
         .catch(err => {
             console.log("Error on user DELETE in @toplist.router", err);
         })
+    } else res.sendStatus(403);
 });
 
 // GET req to display users on selected panel for admin panel editor
@@ -98,7 +103,6 @@ router.get('/top/:playlist_id', rejectUnauthenticated, (req, res) => {
 // user function to mark toplist.hidden=TRUE for a given item, removing it from their toplist
 // or switch it back to FALSE if the user would like to bring it back into their toplist
 router.put('/hidden/:toplist_id', rejectUnauthenticated, (req, res) => {
-    console.log(req.body);
 
     let queryText = ``
 
@@ -128,14 +132,5 @@ router.put('/notes/:toplist_id', rejectUnauthenticated, (req, res) => {
     });
 });
 
-// router.delete('/final/:id', rejectUnauthenticated, (req, res) => {
-//     const queryText = `DELETE FROM "toplist" WHERE "hidden"=TRUE AND "user_id"=$1;`
-//     pool.query(queryText, [req.user.id])
-//     .then(result => res.sendStatus(204))
-//     .catch(err => {
-//         console.log("Error on /final/:id DELETE in @toplist.router", err);
-//         res.sendStatus(500);
-//     });
-// });
 
 module.exports = router;
