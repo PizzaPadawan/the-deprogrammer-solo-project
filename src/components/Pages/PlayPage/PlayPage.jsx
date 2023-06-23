@@ -13,6 +13,8 @@ export default function PlayPage({ currentList }) {
 
     const dispatch = useDispatch();
 
+    const [trashed, setTrashed] = useState(false);
+
     useEffect(() => {
         dispatch({
             type: "FETCH_MASTERLIST",
@@ -26,10 +28,13 @@ export default function PlayPage({ currentList }) {
                 playlist_id: currentList
             }
         })
+        dispatch({
+            type: "FETCH_GAMELIST",
+            payload: {
+                playlist_id: currentList
+            }
+        })
     }, []);
-
-    let trashed = false;
-
     // declaring intervalId to use for setInterval function
     // let intervalId;
 
@@ -91,7 +96,7 @@ export default function PlayPage({ currentList }) {
                     {masterlist.length > 0 && masterlist[0].game_mode
                         ? <>
                             <button onClick={() => gameMode("STOP")} >End Game</button>
-                            <button onClick={trashed = true} >Empty Trash</button>
+                            <button onClick={() => setTrashed(true)} >Empty Trash</button>
                         </>
                         : <button onClick={() => gameMode("START")} >Start Game</button>
                     }
