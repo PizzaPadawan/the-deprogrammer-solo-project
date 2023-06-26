@@ -79,7 +79,8 @@ export default function MasterList() {
                 {panels.length > 0 &&
                     panels.map(panel => {
                         return (
-                            moment(panel.recording_date).format('MM/DD/YYYY') >= moment().subtract(1,'days').format('MM/DD/YYYY') &&
+                            // conditional rendering to only return panels with recording_date greater than or equal to today's date
+                            moment(panel.recording_date).format('MM/DD/YYYY') > moment().subtract(1,'days').format('MM/DD/YYYY') &&
                             <option
                                 key={panel.playlist_id}
                                 value={panel.playlist_id}
@@ -111,8 +112,9 @@ export default function MasterList() {
                         <button onClick={() => setEditDateMode(false)}>Cancel</button>
                     </>
                     // if not, display the current recording_date for this masterlist
-                    : <h4 onClick={() => setEditDateMode(true)} >{moment(masterlist[0].recording_date).format('MM/DD/YYYY')}</h4>
-
+                    : <>
+                    <p>Recording date: {moment(masterlist[0].recording_date).format('MM/DD/YYYY')}</p><button onClick={() => setEditDateMode(true)}>Edit Date</button>
+                    </>
                 // if we're not currently displaying a masterlist, this will be the input field
                 // to add a date for the new list we'll be importing.
                 : <input

@@ -35,24 +35,26 @@ function UserPage() {
       <h2>Welcome, {user.username}!</h2>
       <br />
       <h3>Upcoming Panels:</h3>
-      <p><em>Click on an artist to show your current toplist!</em></p>
       <table>
         <thead>
           <tr>
             <td>Artist</td>
             <td>Panel</td>
-            <td>Date</td>
+            <td>Recording Date</td>
+            <td></td>
           </tr>
         </thead>
         <tbody>
           {/* mapping over our panels store to show upcoming panels the user is a part of */}
           {panels.map(panel => {
             return (
-              moment(panel.recording_date).format('MM/DD/YYYY') >= moment().subtract(1,'days').format('MM/DD/YYYY') &&
-              <tr key={panel.playlist_id} onClick={() => fetchToplist(panel.playlist_id)}>
+              // conditional rendering to only return panels with recording_date greater than or equal to today's date
+              moment(panel.recording_date).format('MM/DD/YYYY') > moment().subtract(1,'days').format('MM/DD/YYYY') &&
+              <tr key={panel.playlist_id}>
                 <td>{panel.artist}</td>
                 <td>{panel.users}</td>
                 <td>{moment(panel.recording_date).format('MM/DD/YYYY')}</td>
+                <td><button onClick={() => fetchToplist(panel.playlist_id)}>Show</button></td>
               </tr>
             );
           })}
@@ -73,6 +75,7 @@ function UserPage() {
           <tbody>
             {toplist.map(track => {
               return (
+                !track.hidden &&
                 <tr key={track.id}>
                   <td>{track.track}</td>
                   <td>{track.album}</td>

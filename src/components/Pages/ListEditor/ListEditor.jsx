@@ -81,6 +81,7 @@ export default function ListEditor() {
         <div>
             <div>
                 {/* This text area will display differently depending on if we've selected a track to edit notes for */}
+                {/* MAKE THIS A MODAL */}
                 {selectedTrack
                     ? <>
                         {/* if we've selected a track, show the save and cancel buttons
@@ -102,7 +103,7 @@ export default function ListEditor() {
                         cols="33"
                         value={newNotes}
                         onChange={e => setNewNotes(e.target.value)}
-                        placeholder={`Click on a track title to edit notes`}
+                        placeholder={`Click "Edit Notes" button to edit track notes`}
                         maxLength="0"
                     />}
             </div>
@@ -116,7 +117,8 @@ export default function ListEditor() {
                     {panels.length > 0 &&
                         panels.map(panel => {
                             return (
-                                moment(panel.recording_date).format('MM/DD/YYYY') >= moment().subtract(1, 'days').format('MM/DD/YYYY') &&
+                                // conditional rendering to only return panels with recording_date greater than or equal to today's date
+                                moment(panel.recording_date).format('MM/DD/YYYY') > moment().subtract(1, 'days').format('MM/DD/YYYY') &&
                                 <option
                                     key={panel.playlist_id}
                                     value={panel.playlist_id}
@@ -137,6 +139,7 @@ export default function ListEditor() {
                                     <td>Album</td>
                                     <td>Notes</td>
                                     <td></td>
+                                    <td></td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -147,30 +150,35 @@ export default function ListEditor() {
                                                 <td>{track.track}</td>
                                                 <td>{track.album}</td>
                                                 <td>{track.notes}</td>
+                                                <td></td>
                                                 <td><button
                                                     value="SHOW"
                                                     onClick={e => trackStatus(track.id, e.target.value)}
-                                                >PUT ME IN COACH</button></td>
+                                                >Add</button></td>
                                             </tr>
                                             : <tr key={track.id}>
-                                                <td
-                                                    onClick={() => { setSelectedTrack(track.track), setSelectedTrackID(track.id) }}
-
-                                                >{track.track}</td>
+                                                <td>{track.track}</td>
                                                 <td>{track.album}</td>
                                                 <td>{track.notes}</td>
+                                                {selectedTrack === track.track
+                                                ? <td></td>
+                                                :< td > <button
+                                                        onClick={() => { setSelectedTrack(track.track), setSelectedTrackID(track.id) }}>
+                                                    Edit Notes
+                                                    </button></td>
+                                                }
                                                 <td><button
-                                                    value="HIDE"
-                                                    onClick={e => trackStatus(track.id, e.target.value)}
-                                                >CUT FROM THE TEAM</button></td>
+                                        value="HIDE"
+                                        onClick={e => trackStatus(track.id, e.target.value)}
+                                    >Remove</button></td>
                                             </tr>
-                                    )
+                            )
                                 })}
-                            </tbody>
-                        </table>
-                    </>
+                        </tbody>
+                    </table>
+            </>
                 }
-            </div>
         </div>
+        </div >
     )
 }
