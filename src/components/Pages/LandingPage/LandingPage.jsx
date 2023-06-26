@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import './LandingPage.css';
 
 // CUSTOM COMPONENTS
 import RegisterForm from '../RegisterPage/RegisterForm';
@@ -23,7 +22,6 @@ function LandingPage() {
             Welcome to The Deprogrammer, a gameplay and list editor companion app
             for guests and hosts of the Deprogrammed podcast!
           </p>
-
           <p>
             With The Deprogrammer, a host can create new masterlists by uploading
             data directly from the Spotify, add new users to podcast panels and give them
