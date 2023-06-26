@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import moment from "moment";
 
 export default function MasterList() {
@@ -24,7 +24,7 @@ export default function MasterList() {
     // retreive our masterlist, enter dispatch hell
     const fetchMasterlist = (playlist_id) => {
         //but only if there's actually a value there, duh
-        dispatch({ type: "SET_CURRENT_LIST", payload: playlist_id })
+        dispatch({ type: 'SET_CURRENT_LIST', payload: playlist_id })
         dispatch({ type: 'FETCH_MASTERLIST', payload: { playlist_id } })
         dispatch({ type: 'FETCH_PANEL_USERS', payload: { playlist_id } })
     }
@@ -79,6 +79,7 @@ export default function MasterList() {
                 {panels.length > 0 &&
                     panels.map(panel => {
                         return (
+                            moment(panel.recording_date).format('MM/DD/YYYY') >= moment().subtract(1,'days').format('MM/DD/YYYY') &&
                             <option
                                 key={panel.playlist_id}
                                 value={panel.playlist_id}

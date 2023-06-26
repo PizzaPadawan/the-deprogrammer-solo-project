@@ -200,7 +200,7 @@ export default function PlayPage() {
                 : <>
                 {/* if you visit this page outside of gameplay, this will be the message */}
                     <div>
-                        <h3>Come back on {masterlist.length > 0 && moment(masterlist[0].recording_date).format('MM/DD/YYYY') || "the date of recording"} to play {masterlist[0].artist || "the game"}!</h3>
+                        <h3>Come back on {masterlist.length > 0 && moment(masterlist[0].recording_date).format('MM/DD/YYYY') || "the date of recording"} to play {masterlist.length > 0 && masterlist[0].artist || "the game"}!</h3>
                     </div>
                 </>
             }

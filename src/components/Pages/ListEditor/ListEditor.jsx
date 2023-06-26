@@ -116,6 +116,7 @@ export default function ListEditor() {
                     {panels.length > 0 &&
                         panels.map(panel => {
                             return (
+                                moment(panel.recording_date).format('MM/DD/YYYY') >= moment().subtract(1, 'days').format('MM/DD/YYYY') &&
                                 <option
                                     key={panel.playlist_id}
                                     value={panel.playlist_id}

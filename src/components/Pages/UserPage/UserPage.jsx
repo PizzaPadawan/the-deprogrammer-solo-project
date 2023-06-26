@@ -48,6 +48,7 @@ function UserPage() {
           {/* mapping over our panels store to show upcoming panels the user is a part of */}
           {panels.map(panel => {
             return (
+              moment(panel.recording_date).format('MM/DD/YYYY') >= moment().subtract(1,'days').format('MM/DD/YYYY') &&
               <tr key={panel.playlist_id} onClick={() => fetchToplist(panel.playlist_id)}>
                 <td>{panel.artist}</td>
                 <td>{panel.users}</td>

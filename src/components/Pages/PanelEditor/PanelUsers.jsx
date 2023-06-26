@@ -14,23 +14,23 @@ export default function PanelUsers() {
     // dispatch to add new user to selected panel
     const addUser = () => {
         //validation
-        if(!username || !currentList){
+        if (!username || !currentList) {
             alert("Please enter a valid username and select a panel")
             return;
         }
-        console.log({currentList, username})
-        dispatch({type: "ADD_USER", payload: {playlist_id: currentList, username} })
+        console.log({ currentList, username })
+        dispatch({ type: "ADD_USER", payload: { playlist_id: currentList, username } })
         setUsername('')
     }
 
     const removeUser = (user_id) => {
-        if(!currentList){
+        if (!currentList) {
             return;
         }
-        console.log({user_id, playlist_id: currentList});
-        dispatch({type: "REMOVE_USER", payload: {user_id, playlist_id: currentList}});
+        console.log({ user_id, playlist_id: currentList });
+        dispatch({ type: "REMOVE_USER", payload: { user_id, playlist_id: currentList } });
     }
-    
+
 
     return (
         <div>
@@ -41,7 +41,7 @@ export default function PanelUsers() {
                 placeholder="Username"
                 onChange={e => setUsername(e.target.value)} />
             <button
-            onClick={addUser}
+                onClick={addUser}
             >Add to Panel</button>
             <br />
             {/* table to display currently selected panel */}
@@ -58,9 +58,11 @@ export default function PanelUsers() {
                             return (
                                 <tr key={user.id}>
                                     <td>{user.username}</td>
-                                    <td><button
-                                    onClick={() => removeUser(user.id)}
-                                    >Remove</button></td>
+                                    <td>
+                                        <button
+                                            onClick={() => removeUser(user.id)}
+                                        >Remove</button>
+                                    </td>
                                 </tr>
                             );
                         })}
