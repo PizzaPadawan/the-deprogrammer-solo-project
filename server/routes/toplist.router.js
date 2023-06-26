@@ -15,7 +15,11 @@ router.post('/:playlist_id', rejectUnauthenticated, (req, res) => {
     RETURNING *;`
 
     pool.query(queryText, [req.body.username, req.params.playlist_id])
-        .then(response => response[0] ? res.sendStatus(201) : res.send("Invalid username"))
+        .then(result => {
+            console.log(result.rows)
+            if (result.rows.length > 1){
+             res.sendStatus(201)
+            } else res.send("Invalid username")})
         .catch(err => {
             console.log("Error on user POST in @toplist.router", err);
             res.sendStatus(500);
