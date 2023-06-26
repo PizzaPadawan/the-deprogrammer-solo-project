@@ -10,6 +10,7 @@ function* postMasterlist(action){
         // sends action.payload:{spotify_id(REQUIRED), recording_date(OPTIONAL)}
         console.log(action.payload)
         yield axios.post('/api/spotify/', action.payload);
+        yield put({type: "FETCH_PANELS"})
     } catch (error) {
         console.log("Error on pullMasterlist saga", error);
     }

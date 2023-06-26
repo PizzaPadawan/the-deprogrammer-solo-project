@@ -80,7 +80,7 @@ export default function MasterList() {
                     panels.map(panel => {
                         return (
                             // conditional rendering to only return panels with recording_date greater than or equal to today's date
-                            moment(panel.recording_date).format('MM/DD/YYYY') > moment().subtract(1,'days').format('MM/DD/YYYY') &&
+                            moment(panel.recording_date).format('YYYY/MM/DD') > moment().subtract(1, 'days').format('YYYY/MM/DD') &&
                             <option
                                 key={panel.playlist_id}
                                 value={panel.playlist_id}

@@ -33,6 +33,7 @@ export default function PanelUsers() {
 
 
     return (
+        panelUsers.length > 0 &&
         <div>
             {/* input to add new user to panel */}
             <input

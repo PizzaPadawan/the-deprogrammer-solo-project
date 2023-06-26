@@ -79,6 +79,7 @@ export default function ListEditor() {
 
     return (
         <div>
+            {toplist.length > 0 &&
             <div>
                 {/* This text area will display differently depending on if we've selected a track to edit notes for */}
                 {/* MAKE THIS A MODAL */}
@@ -106,7 +107,7 @@ export default function ListEditor() {
                         placeholder={`Click "Edit Notes" button to edit track notes`}
                         maxLength="0"
                     />}
-            </div>
+            </div>}
             <div>
                 {/* this dropdown allows the user to select between all artist they're on a panel for */}
                 <select
@@ -118,7 +119,7 @@ export default function ListEditor() {
                         panels.map(panel => {
                             return (
                                 // conditional rendering to only return panels with recording_date greater than or equal to today's date
-                                moment(panel.recording_date).format('MM/DD/YYYY') > moment().subtract(1, 'days').format('MM/DD/YYYY') &&
+                                moment(panel.recording_date).format('YYYY/MM/DD') > moment().subtract(1, 'days').format('YYYY/MM/DD') &&
                                 <option
                                     key={panel.playlist_id}
                                     value={panel.playlist_id}
