@@ -31,9 +31,9 @@ function Footer() {
         <Typography sx={{ textShadow: "1px 1px 8px black", pt:0 }} color="warning.dark" variant="body1" >&copy; 2023 Kord Maurer</Typography>
       </Grid>
       <Grid item xs={2} sx={{textAlign: 'right'}}>
-        <IconButton color="warning" size="large" label="LinkedIn"><LinkedInIcon /></IconButton>
-        <IconButton color="warning" size="large"  label="GitHub"><GitHubIcon /></IconButton>
-        <IconButton color="warning" size="large"  label="Email"><MailOutlineIcon /></IconButton>
+        <IconButton color="warning" href="https://www.linkedin.com/in/kord-maurer/" size="large" label="LinkedIn"><LinkedInIcon /></IconButton>
+        <IconButton color="warning" href="https://github.com/PizzaPadawan" size="large"  label="GitHub"><GitHubIcon /></IconButton>
+        <IconButton color="warning" href="mailto: kord.r.maurer@gmail.com" size="large"  label="Email"><MailOutlineIcon /></IconButton>
       </Grid>
     </Grid>)
 }
