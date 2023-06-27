@@ -19,38 +19,37 @@ function Nav() {
   const user = useSelector((store) => store.user);
 
   return (
-    <Grid container spacing={10}
-      lg='auto'
+    <Grid container spacing={2}
       className="nav"
-      maxWidth="xl"
       sx={{
         alignItems: "center",
         justifyContent: "space-between",
-        py: 3,
+        p: 3,
         backgroundImage: `linear-gradient(214deg, rgba(31,0,65,0.8) 0%, rgba(255,0,50,0.7) 100%), url(${process.env.PUBLIC_URL}/images/DeprogrammedHeader.png)`,
         backgroundSize: "cover",
-        backgroundPosition: "top"
+        backgroundPosition: "fixed"
       }}>
       <Grid
         item
+        xs={5}
         sx={{ ml: 3 }}
       >
         <Link href="/#/home" underline="none" >
           <Typography
             variant="h5"
             color="warning.light"
-            sx={{ textShadow: "-3px 3px 10px black", pt:0 }}
+            sx={{ textShadow: "-3px 3px 10px black", pl:1 }}
           >
             The
           </Typography>
           <Typography
-            variant="h1"
+            variant="h2"
             color="warning.light"
             sx={{ textShadow: "-3px 3px 10px black" }}
           >Deprogrammer</Typography>
         </Link>
       </Grid>
-      <Grid item>
+      <Grid item xs={6} sx={{textAlign: 'right'}}>
         <ButtonGroup 
         color="warning" 
         variant="contained"
