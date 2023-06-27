@@ -49,7 +49,14 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <Container sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }} disableGutters maxWidth={false}>
+        <Container 
+        sx={{ 
+        minHeight: '100vh', 
+        display: 'flex', 
+        flexDirection: 'column'
+        }} 
+        disableGutters 
+        maxWidth={false}>
           <Nav />
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}

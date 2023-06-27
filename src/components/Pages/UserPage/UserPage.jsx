@@ -17,10 +17,9 @@ import {
   Paper
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import {tableCellClasses} from '@mui/material';
+import { tableCellClasses } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
-
 
 
 function UserPage() {
@@ -59,7 +58,7 @@ function UserPage() {
       fontSize: 13,
     },
   }));
-  
+
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
@@ -71,20 +70,24 @@ function UserPage() {
   }));
 
   return (
-    <Grid container spacing={5} sx={{ ml: 1 }}>
+    <Grid container
+      spacing={5}
+      sx={{ ml: 1 }}
+    >
       <Grid item xs={6}>
-        <Typography variant="h5" color="warning.dark" sx={{ pt: 3 }}>Welcome, {user.username}!</Typography>
-        <br />
-        <Typography variant="h6" sx={{ pb: 3 }} >Upcoming Panels:</Typography>
-        <Paper>
+        <Typography variant="h5" color="warning.light" sx={{ pt: 3 }}>Welcome, {user.username}!</Typography>
+        <Paper sx={{ mt: 3 }}>
           <TableContainer>
             <Table>
               <TableHead>
                 <StyledTableRow>
+                  <StyledTableCell colSpan={4} sx={{ borderBottom: 0 }}>Upcoming Panels</StyledTableCell>
+                </StyledTableRow>
+                <StyledTableRow>
                   <StyledTableCell>Artist</StyledTableCell>
                   <StyledTableCell>Panel</StyledTableCell>
-                  <StyledTableCell sx={{width:125}}>Recording Date</StyledTableCell>
-                  <StyledTableCell sx={{textAlign:'center'}} ><VisibilityIcon /></StyledTableCell>
+                  <StyledTableCell sx={{ width: 125 }}>Recording Date</StyledTableCell>
+                  <StyledTableCell sx={{ textAlign: 'center' }} ><VisibilityIcon /></StyledTableCell>
                 </StyledTableRow>
               </TableHead>
               <TableBody>
@@ -109,16 +112,31 @@ function UserPage() {
       <br />
       <Grid item>
         {/* if toplist store is populated, display the Artist and Recording Date of selected panel */}
-        <Typography variant="h6" color="warning.dark" sx={{ pt: 3 }} >{toplist.length > 0 && toplist[0].artist}</Typography>
-        <Typography variant="h6" color="secondary.dark" sx={{ pb: 2 }}>{toplist.length > 0 && moment(toplist[0].recording_date).format('MM/DD/YYYY')}</Typography>
+        {/* <Typography variant="h6" color="warning.dark" sx={{ pt: 3 }} ></Typography>
+        <Typography variant="h6" color="secondary.dark" sx={{ pb: 2 }}></Typography> */}
         {toplist.length > 0
-          ? <Paper>
+          ? <Paper sx={{ mt: 10 }}>
             <TableContainer sx={{ maxHeight: 400, width: 600 }} >
               <Table stickyHeader>
                 <TableHead>
                   <StyledTableRow>
-                    <StyledTableCell sx={{textAlign:'center'}} ><FormatListNumberedIcon/></StyledTableCell>
-                    <StyledTableCell sx={{width: 300}}>Track</StyledTableCell>
+                    <TableCell
+                      colSpan={2}
+                      sx={{borderBottom:0,
+                      backgroundColor:'black',
+                      color:'#f57c00'}}
+                    >{toplist.length > 0 && toplist[0].artist}</TableCell>
+                    <TableCell
+                      colSpan={1}
+                      align='right'
+                      sx={{borderBottom:0,
+                      backgroundColor:'black',
+                      color:'#ab47bc'}}
+                    >{toplist.length > 0 && moment(toplist[0].recording_date).format('MM/DD/YYYY')}</TableCell>
+                  </StyledTableRow>
+                  <StyledTableRow>
+                    <StyledTableCell sx={{ textAlign: 'center' }} ><FormatListNumberedIcon /></StyledTableCell>
+                    <StyledTableCell sx={{ width: 300 }}>Track</StyledTableCell>
                     <StyledTableCell>Album</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
@@ -127,7 +145,7 @@ function UserPage() {
                     return (
                       !track.hidden &&
                       <StyledTableRow key={track.id}>
-                        <StyledTableCell>{index+1}</StyledTableCell>
+                        <StyledTableCell>{index + 1}</StyledTableCell>
                         <StyledTableCell>{track.track}</StyledTableCell>
                         <StyledTableCell>{track.album}</StyledTableCell>
                       </StyledTableRow>
