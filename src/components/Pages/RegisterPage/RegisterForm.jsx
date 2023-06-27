@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { Typography, Button, TextField, Grid, Container } from '@mui/material';
+
 function RegisterForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
 
-  const registerUser = (event) => {
-    event.preventDefault();
-
+  const registerUser = () => {
     dispatch({
       type: 'REGISTER',
       payload: {
@@ -20,41 +20,42 @@ function RegisterForm() {
   }; // end registerUser
 
   return (
-    <form className="formPanel" onSubmit={registerUser}>
-      <h2>Register User</h2>
-      {errors.registrationMessage && (
-        <h3 className="alert" role="alert">
-          {errors.registrationMessage}
-        </h3>
-      )}
-      <div>
-        <label htmlFor="username">
-          Username:
-          <input
+      <Container 
+      sx={{display:'flex', flexFlow: 'column wrap'}}
+      maxWidth="xs"
+      > 
+          <Typography variant="h5" align="center" sx={{p:1, m:2}}>Register User</Typography>
+          {errors.registrationMessage && (
+            <Typography variant="h6" className="alert" role="alert">
+              {errors.registrationMessage}
+            </Typography>
+          )}
+          <TextField
             type="text"
-            name="username"
+            label="Username"
             value={username}
             required
+            size="small"
             onChange={(event) => setUsername(event.target.value)}
           />
-        </label>
-      </div>
-      <div>
-        <label htmlFor="password">
-          Password:
-          <input
+          <TextField
             type="password"
-            name="password"
+            label="Password"
             value={password}
+            size="small"
             required
             onChange={(event) => setPassword(event.target.value)}
           />
-        </label>
-      </div>
-      <div>
-        <input className="btn" type="submit" name="submit" value="Register" />
-      </div>
-    </form>
+          <br/>
+          <Button
+            sx={{mb: 2}}
+            type="submit"
+            name="submit"
+            color="warning"
+            variant="contained"
+            onClick={registerUser}
+          >Register</Button>
+      </Container>
   );
 }
 

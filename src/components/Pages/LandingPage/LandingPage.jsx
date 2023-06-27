@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Grid, Typography, Button, Container } from '@mui/material';
 
 // CUSTOM COMPONENTS
 import RegisterForm from '../RegisterPage/RegisterForm';
 
 function LandingPage() {
-  const [heading, setHeading] = useState('Welcome');
   const history = useHistory();
 
   const onLogin = (event) => {
@@ -13,37 +13,34 @@ function LandingPage() {
   };
 
   return (
-    <div className="container">
-      <h2>{heading}</h2>
+    <Container>
+      <Grid container>
 
-      <div className="grid">
-        <div className="grid-col grid-col_8">
-          <p>
+        <Grid item xs={8}>
+          <Typography sx={{ mx: 2, my: 4 }} variant="h4">"Learn 'em and love 'em, people!"</Typography>
+          <Typography sx={{ mx: 2, my: 4 }} variant="body1">
             Welcome to The Deprogrammer, a gameplay and list editor companion app
             for guests and hosts of the Deprogrammed podcast!
-          </p>
-          <p>
-            With The Deprogrammer, a host can create new masterlists by uploading
+          </Typography>
+          <Typography sx={{ mx: 2, my: 4 }} variant="body2">
+            With The Deprogrammer, users can create an account, view all upcoming podcast panels they belong to,
+            edit their top lists, and put their songs into play during gameplay, all in one
+            cohesive app. The host of the podcast can also create new masterlists by uploading
             data directly from the Spotify, add new users to podcast panels and give them
             their own copies of that masterlist to edit themselves, and manage gameplay.
-            Users can create an account, view all upcoming podcast panels they belong to,
-            edit their top lists, and put their songs into play during gameplay, all in one
-            cohesive app. 
-          </p>
+          </Typography>
+        </Grid>
 
-        </div>
-        <div className="grid-col grid-col_4">
+        <Grid item xs={3}>
           <RegisterForm />
-
-          <center>
-            <h4>Already a Member?</h4>
-            <button className="btn btn_sizeSm" onClick={onLogin}>
+            <Typography align="center" variant="h5">Already a Member?</Typography>
+            <Button sx={{ mx: 2.9, my: 1.5, px: 12.2 }} variant="contained" color="warning" onClick={onLogin}>
               Login
-            </button>
-          </center>
-        </div>
-      </div>
-    </div>
+            </Button>
+        </Grid>
+
+      </Grid>
+    </Container>
   );
 }
 
