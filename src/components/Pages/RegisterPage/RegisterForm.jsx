@@ -48,7 +48,7 @@ function RegisterForm() {
           />
           <br/>
           <Button
-            sx={{mb: 2}}
+            sx={{mb: 2 }}
             type="submit"
             name="submit"
             color="warning"
