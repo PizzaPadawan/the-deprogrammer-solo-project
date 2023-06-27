@@ -14,8 +14,8 @@ function LandingPage() {
 
   return (
     <Container>
-      <Paper sx={{mt:3}}>
-        <Grid container>
+      <Paper sx={{mt:5}}>
+        <Grid container sx={{ml: 6}}>
 
           <Grid item xs={8}>
             <Typography sx={{ mx: 2, my: 4 }} variant="h4">"Learn 'em and love 'em, people!"</Typography>

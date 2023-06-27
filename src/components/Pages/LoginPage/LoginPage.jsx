@@ -1,18 +1,19 @@
 import React from 'react';
 import LoginForm from './LoginForm';
 import { useHistory } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Button, Paper, Container } from '@mui/material';
 
 function LoginPage() {
   const history = useHistory();
 
   return (
-    <div>
+    <Container maxWidth="sm">
+      <Paper sx={{mt:5}}>
       <LoginForm />
 
       <center>
         <Button
-          sx={{ mx: 4, px: 20.5 }}
+          sx={{ mx: 4, px: 20.5, mb: 5 }}
           variant="contained"
           color="warning"
           type="button"
@@ -24,7 +25,8 @@ function LoginPage() {
           Register
         </Button>
       </center>
-    </div>
+      </Paper>
+    </Container>
   );
 }
 
