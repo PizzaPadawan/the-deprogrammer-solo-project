@@ -18,6 +18,8 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {tableCellClasses} from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
 
 
@@ -82,7 +84,7 @@ function UserPage() {
                   <StyledTableCell>Artist</StyledTableCell>
                   <StyledTableCell>Panel</StyledTableCell>
                   <StyledTableCell sx={{width:125}}>Recording Date</StyledTableCell>
-                  <StyledTableCell></StyledTableCell>
+                  <StyledTableCell sx={{textAlign:'center'}} ><VisibilityIcon /></StyledTableCell>
                 </StyledTableRow>
               </TableHead>
               <TableBody>
@@ -115,7 +117,7 @@ function UserPage() {
               <Table stickyHeader>
                 <TableHead>
                   <StyledTableRow>
-                    <StyledTableCell>#</StyledTableCell>
+                    <StyledTableCell sx={{textAlign:'center'}} ><FormatListNumberedIcon/></StyledTableCell>
                     <StyledTableCell sx={{width: 300}}>Track</StyledTableCell>
                     <StyledTableCell>Album</StyledTableCell>
                   </StyledTableRow>
