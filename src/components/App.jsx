@@ -27,7 +27,7 @@ import ListEditor from './Pages/ListEditor/ListEditor';
 import PlayPage from './Pages/PlayPage/PlayPage';
 
 //Material UI
-import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
+import { createTheme, ThemeProvider, Container } from '@mui/material';
 
 const font = "'Montserrat', sans-serif";
 const theme = createTheme({
@@ -49,7 +49,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <div>
+        <Container sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }} disableGutters maxWidth={false}>
           <Nav />
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
@@ -146,7 +146,7 @@ function App() {
             </Route>
           </Switch>
           <Footer />
-        </div>
+        </Container>
       </Router>
     </ThemeProvider>
   );
