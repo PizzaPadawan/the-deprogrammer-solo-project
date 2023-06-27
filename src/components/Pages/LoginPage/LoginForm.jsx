@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {useSelector} from 'react-redux';
 
+import { Container, Typography, TextField, Button } from '@mui/material';
+
 function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const errors = useSelector(store => store.errors);
   const dispatch = useDispatch();
 
-  const login = (event) => {
-    event.preventDefault();
-
+  const login = () => {
     if (username && password) {
       dispatch({
         type: 'LOGIN',
@@ -25,41 +25,43 @@ function LoginForm() {
   }; // end login
 
   return (
-    <form className="formPanel" onSubmit={login}>
-      <h2>Login</h2>
-      {errors.loginMessage && (
-        <h3 className="alert" role="alert">
-          {errors.loginMessage}
-        </h3>
-      )}
-      <div>
-        <label htmlFor="username">
-          Username:
-          <input
-            type="text"
-            name="username"
-            required
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <label htmlFor="password">
-          Password:
-          <input
-            type="password"
-            name="password"
-            required
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <input className="btn" type="submit" name="submit" value="Log In" />
-      </div>
-    </form>
+    <Container 
+    sx={{display:'flex', flexFlow: 'column wrap'}}
+    maxWidth="xs"
+    > 
+        <Typography variant="h5" align="center" sx={{p:1, m:2}}>Login</Typography>
+        {errors.loginMessage && (
+          <Typography variant="h6" className="alert" role="alert">
+            {errors.loginMessage}
+          </Typography>
+        )}
+        <TextField
+          sx={{pb:1}}
+          type="text"
+          label="Username"
+          value={username}
+          required
+          size="small"
+          onChange={(event) => setUsername(event.target.value)}
+        />
+        <TextField
+          type="password"
+          label="Password"
+          value={password}
+          size="small"
+          required
+          onChange={(event) => setPassword(event.target.value)}
+        />
+        <br/>
+        <Button
+          sx={{mb: 2 }}
+          type="submit"
+          name="submit"
+          color="warning"
+          variant="contained"
+          onClick={login}
+        >Log In</Button>
+    </Container>
   );
 }
 
