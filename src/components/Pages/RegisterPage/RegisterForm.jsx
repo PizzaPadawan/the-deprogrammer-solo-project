@@ -31,6 +31,7 @@ function RegisterForm() {
             </Typography>
           )}
           <TextField
+            sx={{pb:1}}
             type="text"
             label="Username"
             value={username}
