@@ -214,44 +214,44 @@ export default function ListEditor() {
                                         return (
                                             track.hidden
                                                 ? <TableRow sx={{ backgroundColor: "darkgray" }} key={track.id}>
-                                                    <TableCell>{index + 1}</TableCell>
-                                                    <TableCell>{track.track}</TableCell>
-                                                    <TableCell>{track.album}</TableCell>
-                                                    <TableCell>{track.notes}</TableCell>
-                                                    <TableCell></TableCell>
-                                                    <TableCell>
+                                                    <StyledTableCell>{index + 1}</StyledTableCell>
+                                                    <StyledTableCell>{track.track}</StyledTableCell>
+                                                    <StyledTableCell>{track.album}</StyledTableCell>
+                                                    <StyledTableCell>{track.notes}</StyledTableCell>
+                                                    <StyledTableCell></StyledTableCell>
+                                                    <StyledTableCell>
                                                         <Tooltip title="Add To List">
                                                             <IconButton
                                                                 onClick={e => trackStatus(track.id, "SHOW")}
                                                             ><AddCircleIcon sx={{ color: 'white' }} />
                                                             </IconButton>
                                                         </Tooltip>
-                                                    </TableCell>
+                                                    </StyledTableCell>
                                                 </TableRow >
                                                 : <StyledTableRow key={track.id}>
-                                                    <TableCell>{index + 1}</TableCell>
-                                                    <TableCell>{track.track}</TableCell>
-                                                    <TableCell>{track.album}</TableCell>
-                                                    <TableCell>{track.notes}</TableCell>
+                                                    <StyledTableCell>{index + 1}</StyledTableCell>
+                                                    <StyledTableCell>{track.track}</StyledTableCell>
+                                                    <StyledTableCell>{track.album}</StyledTableCell>
+                                                    <StyledTableCell>{track.notes}</StyledTableCell>
                                                     {selectedTrack === track.track
-                                                        ? <TableCell ><CreateIcon /></TableCell>
-                                                        : < TableCell >
+                                                        ? <StyledTableCell ><CreateIcon /></StyledTableCell>
+                                                        : < StyledTableCell >
                                                             <Tooltip title="Edit Note">
                                                                 <IconButton
                                                                     onClick={() => { handleClickOpen(track.track, track.id) }}>
                                                                     <EditNoteIcon />
                                                                 </IconButton>
                                                             </Tooltip>
-                                                        </TableCell>
+                                                        </StyledTableCell>
                                                     }
-                                                    <TableCell>
+                                                    <StyledTableCell>
                                                         <Tooltip title="Remove From List">
                                                             <IconButton
                                                                 onClick={e => trackStatus(track.id, "HIDE")}
                                                             ><RemoveCircleIcon />
                                                             </IconButton>
                                                         </Tooltip>
-                                                    </TableCell>
+                                                    </StyledTableCell>
                                                 </StyledTableRow >
                                         )
                                     })}
