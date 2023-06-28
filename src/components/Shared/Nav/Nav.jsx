@@ -26,8 +26,8 @@ function Nav() {
         justifyContent: "space-between",
         p: 3,
         backgroundImage: `linear-gradient(214deg, rgba(31,0,65,0.8) 0%, rgba(255,0,50,0.7) 100%), url(${process.env.PUBLIC_URL}/images/DeprogrammedHeader.png)`,
-        backgroundSize: "cover",
-        backgroundPosition: "fixed"
+        backgroundSize: "contain",
+        backgroundAttachment: "fixed"
       }}>
       <Grid
         item

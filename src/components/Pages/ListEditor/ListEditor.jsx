@@ -2,6 +2,36 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import moment from "moment";
 
+//MUI
+import {
+    Button,
+    IconButton,
+    Table,
+    TableContainer,
+    TableHead,
+    TableBody,
+    TableRow,
+    TableCell,
+    Typography,
+    Container,
+    Paper,
+    TextField,
+    MenuItem,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { tableCellClasses } from '@mui/material';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import CreateIcon from '@mui/icons-material/Create';
+
 export default function ListEditor() {
 
     useEffect(() => {
@@ -18,7 +48,31 @@ export default function ListEditor() {
     const [newNotes, setNewNotes] = useState('');
     const [selectedTrack, setSelectedTrack] = useState('');
     const [selectedTrackID, setSelectedTrackID] = useState('');
+    const [open, setOpen] = useState(false);
 
+    // Custom MUI components
+    const StyledTableCell = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.head}`]: {
+            backgroundColor: theme.palette.common.black,
+            color: theme.palette.common.white,
+            fontSize: 13,
+        },
+        [`&.${tableCellClasses.body}`]: {
+            fontSize: 13,
+        },
+    }));
+
+    const StyledTableRow = styled(TableRow)(({ theme }) => ({
+        '&:nth-of-type(odd)': {
+            backgroundColor: theme.palette.action.hover,
+        },
+        // hide last border
+        '&:last-child td, &:last-child th': {
+            border: 0,
+        },
+    }));
+
+    // putting the currently selected list in Redux state
     const setCurrentList = (playlistId) => {
         // keep our current list in our Redux store to reference across components
         dispatch({
@@ -56,6 +110,18 @@ export default function ListEditor() {
         })
     }
 
+    const handleClickOpen = (track, trackID) => {
+        setSelectedTrack(track);
+        setSelectedTrackID(trackID);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setSelectedTrack('')
+        setSelectedTrackID('')
+        setOpen(false);
+    };
+
     // click handler to submit new track notes
     const editNote = () => {
         // give me validation
@@ -73,113 +139,113 @@ export default function ListEditor() {
             }
         })
         setNewNotes('');
-        setSelectedTrack('');
+        setSelectedTrack('')
+        setOpen(false);
     }
 
 
     return (
-        <div>
-            {toplist.length > 0 &&
-            <div>
-                {/* This text area will display differently depending on if we've selected a track to edit notes for */}
-                {/* MAKE THIS A MODAL */}
-                {selectedTrack
-                    ? <>
-                        {/* if we've selected a track, show the save and cancel buttons
-                    as well as listing the selected track name in the placeholder */}
-                        <textarea
-                            rows="5"
-                            cols="33"
+        <Container >
+            <Paper sx={{ my: 5, py: 3 }}>
+                <Dialog open={open} onClose={handleClose}>
+                    <DialogTitle>Edit Notes for {selectedTrack}</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            sx={{ width: 400 }}
+                            rows={5}
+                            multiline
                             value={newNotes}
                             onChange={e => setNewNotes(e.target.value)}
-                            placeholder={`Edit notes for ${selectedTrack}`}
+                            placeholder={`How do you feel about this song?`}
                             maxLength="1000"
                         />
-                        <button onClick={editNote} >Save</button>
-                        <button onClick={() => { setSelectedTrack(''), setNewNotes('') }}>Cancel</button>
-                    </>
-                    // if we haven't selected a track, the placeholder will let the user know how they can edit notes per track.
-                    : <textarea
-                        rows="5"
-                        cols="33"
-                        value={newNotes}
-                        onChange={e => setNewNotes(e.target.value)}
-                        placeholder={`Click "Edit Notes" button to edit track notes`}
-                        maxLength="0"
-                    />}
-            </div>}
-            <div>
-                {/* this dropdown allows the user to select between all artist they're on a panel for */}
-                <select
-                    value={currentList}
-                    onChange={e => setCurrentList(e.target.value)}>
-                    <option>Select an artist</option>
-                    {/* if our panels store is populated, bring our available panels into the dropdown */}
-                    {panels.length > 0 &&
-                        panels.map(panel => {
-                            return (
-                                // conditional rendering to only return panels with recording_date greater than or equal to today's date
-                                moment(panel.recording_date).format('YYYY/MM/DD') > moment().subtract(1, 'days').format('YYYY/MM/DD') &&
-                                <option
-                                    key={panel.playlist_id}
-                                    value={panel.playlist_id}
-                                >{panel.artist}</option>
-                            );
-                        })}
-                </select>
-                {/* this button allows the user to commit to displaying the artist selected from the dropdown */}
-                <button onClick={() => fetchToplist(currentList)}>Select</button>
-                {/* if our toplist is populated, show the recording date for this panel */}
-                {toplist.length > 0 &&
-                    <>
-                        <h4>{moment(toplist[0].recording_date).format('MM/DD/YYYY')}</h4>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <td>Track</td>
-                                    <td>Album</td>
-                                    <td>Notes</td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {toplist.map(track => {
-                                    return (
-                                        track.hidden
-                                            ? <tr key={track.id}>
-                                                <td>{track.track}</td>
-                                                <td>{track.album}</td>
-                                                <td>{track.notes}</td>
-                                                <td></td>
-                                                <td><button
-                                                    value="SHOW"
-                                                    onClick={e => trackStatus(track.id, e.target.value)}
-                                                >Add</button></td>
-                                            </tr>
-                                            : <tr key={track.id}>
-                                                <td>{track.track}</td>
-                                                <td>{track.album}</td>
-                                                <td>{track.notes}</td>
-                                                {selectedTrack === track.track
-                                                ? <td></td>
-                                                :< td > <button
-                                                        onClick={() => { setSelectedTrack(track.track), setSelectedTrackID(track.id) }}>
-                                                    Edit Notes
-                                                    </button></td>
-                                                }
-                                                <td><button
-                                        value="HIDE"
-                                        onClick={e => trackStatus(track.id, e.target.value)}
-                                    >Remove</button></td>
-                                            </tr>
-                            )
-                                })}
-                        </tbody>
-                    </table>
-            </>
-                }
-        </div>
-        </div >
+                        <DialogActions>
+                            <Button variant="contained" color="warning" onClick={editNote} >Save</Button>
+                        </DialogActions>
+                        <DialogContentText>
+                            <Typography variant="caption">Hit the ESC key or click outside this box cancel changes</Typography>
+                        </DialogContentText>
+                    </DialogContent>
+                </Dialog>
+                <Container sx={{ my: 3 }}>
+                    {/* this dropdown allows the user to select between all artist they're on a panel for */}
+                    <TextField
+                        sx={{ width: '20%' }}
+                        select
+                        size="small"
+                        value={currentList}
+                        label="Select an Artist"
+                        onChange={e => setCurrentList(e.target.value)}>
+                        <MenuItem>Select an artist</MenuItem>
+                        {/* if our panels store is populated, bring our available panels into the dropdown */}
+                        {panels.length > 0 &&
+                            panels.map(panel => {
+                                return (
+                                    // conditional rendering to only return panels with recording_date greater than or equal to today's date
+                                    moment(panel.recording_date).format('YYYY/MM/DD') > moment().subtract(1, 'days').format('YYYY/MM/DD') &&
+                                    <MenuItem
+                                        key={panel.playlist_id}
+                                        value={panel.playlist_id}
+                                    >{panel.artist}</MenuItem>
+                                );
+                            })}
+                    </TextField>
+                    {/* this button allows the user to commit to displaying the artist selected from the dropdown */}
+                    <Button variant="contained" color="warning" sx={{ mx: 1 }} onClick={() => fetchToplist(currentList)}>Select</Button>
+                    {toplist.length > 0 &&
+                        <Typography variant="h6" sx={{ mt: 2 }} >{moment(toplist[0].recording_date).format('MM/DD/YYYY')} </Typography>}
+                    {/* if our toplist is populated, show the recording date for this panel */}
+                    {toplist.length > 0 &&
+                        <TableContainer sx={{ maxHeight: 500, my: 3 }}>
+                            <Table stickyHeader>
+                                <TableHead>
+                                    <StyledTableRow >
+                                        <StyledTableCell><FormatListNumberedIcon /></StyledTableCell>
+                                        <StyledTableCell>Track</StyledTableCell>
+                                        <StyledTableCell>Album</StyledTableCell>
+                                        <StyledTableCell>Notes</StyledTableCell>
+                                        <StyledTableCell><CreateIcon /></StyledTableCell>
+                                        <StyledTableCell><PlaylistAddCheckIcon /></StyledTableCell>
+                                    </StyledTableRow >
+                                </TableHead>
+                                <TableBody>
+                                    {toplist.map((track, index) => {
+                                        return (
+                                            track.hidden
+                                                ? <TableRow sx={{ backgroundColor: "darkgray" }} key={track.id}>
+                                                    <TableCell>{index + 1}</TableCell>
+                                                    <TableCell>{track.track}</TableCell>
+                                                    <TableCell>{track.album}</TableCell>
+                                                    <TableCell>{track.notes}</TableCell>
+                                                    <TableCell></TableCell>
+                                                    <TableCell><IconButton
+                                                        onClick={e => trackStatus(track.id, "SHOW")}
+                                                    ><AddCircleIcon sx={{ color: 'white' }} /></IconButton></TableCell>
+                                                </TableRow >
+                                                : <StyledTableRow key={track.id}>
+                                                    <TableCell>{index + 1}</TableCell>
+                                                    <TableCell>{track.track}</TableCell>
+                                                    <TableCell>{track.album}</TableCell>
+                                                    <TableCell>{track.notes}</TableCell>
+                                                    {selectedTrack === track.track
+                                                        ? <TableCell ><CreateIcon /></TableCell>
+                                                        : < TableCell > <IconButton
+                                                            onClick={() => { handleClickOpen(track.track, track.id) }}>
+                                                            <EditNoteIcon />
+                                                        </IconButton></TableCell>
+                                                    }
+                                                    <TableCell><IconButton
+                                                        onClick={e => trackStatus(track.id, "HIDE")}
+                                                    ><RemoveCircleIcon /></IconButton></TableCell>
+                                                </StyledTableRow >
+                                        )
+                                    })}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    }
+                </Container>
+            </Paper>
+        </Container >
     )
 }
