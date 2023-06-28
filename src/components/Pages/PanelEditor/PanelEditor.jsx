@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import MasterList from "./MasterList";
 import PanelUsers from "./PanelUsers";
 
+import { Grid } from "@mui/material";
+
 export default function PanelEditor() {
 
     // useEffect(() => {
@@ -14,10 +16,13 @@ export default function PanelEditor() {
     const dispatch = useDispatch();
 
     return (
-        <div>
-            <PanelUsers/>
-            <br />
-            <MasterList />
-        </div>
+        <Grid container>
+            <Grid item>
+                <PanelUsers />
+            </Grid>
+            <Grid item>
+                <MasterList />
+            </Grid>
+        </Grid>
     )
 }
