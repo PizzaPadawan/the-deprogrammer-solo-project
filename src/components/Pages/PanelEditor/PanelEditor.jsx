@@ -1,28 +1,27 @@
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import MasterList from "./MasterList";
 import PanelUsers from "./PanelUsers";
 
-import { Grid } from "@mui/material";
+import { Grid, Container } from "@mui/material";
 
 export default function PanelEditor() {
 
-    // useEffect(() => {
-    //     dispatch({ type: "FETCH_PANELS" });
-    //     console.log("effecting your use, dude")
-    // }, [])
-
-    // Redux
-    const dispatch = useDispatch();
+    const currentList = useSelector(store => store.currentList)
 
     return (
-        <Grid container>
-            <Grid item>
-                <PanelUsers />
-            </Grid>
-            <Grid item>
-                <MasterList />
-            </Grid>
-        </Grid>
+        <Container>
+            { currentList
+                ?<Grid container>
+                    <Grid item xs={4}>
+                        <PanelUsers />
+                    </Grid>
+                    <Grid item xs={8}>
+                        <MasterList />
+                    </Grid>
+                </Grid>
+                : <MasterList/>
+            }
+        </Container>
     )
 }

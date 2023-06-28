@@ -4,7 +4,7 @@ import { useState } from "react";
 //MUI
 import {
     TextField,
-    Button,
+    IconButton,
     TableContainer,
     Table,
     TableHead,
@@ -16,6 +16,8 @@ import {
 } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 export default function PanelUsers() {
 
@@ -81,13 +83,14 @@ export default function PanelUsers() {
                     type="text"
                     value={username}
                     size="small"
-                    Label="Username"
+                    label="Username"
                     onChange={e => setUsername(e.target.value)} />
-                <Button
+                <IconButton
+                    sx={{ml:1}}
                     variant="contained"
                     color="warning"
                     onClick={addUser}
-                >Add to Panel</Button>
+                ><AddCircleIcon/></IconButton>
                 <br />
                 {/* table to display currently selected panel */}
                 <TableContainer >
@@ -105,11 +108,11 @@ export default function PanelUsers() {
                                         <StyledTableRow key={user.id}>
                                             <StyledTableCell>{user.username}</StyledTableCell>
                                             <StyledTableCell>
-                                                <Button
+                                                <IconButton
                                                 variant="text"
-                                                color="warning"
+                                                color="error"
                                                     onClick={() => removeUser(user.id)}
-                                                >Remove</Button>
+                                                ><RemoveCircleIcon/></IconButton>
                                             </StyledTableCell>
                                         </StyledTableRow>
                                     );
