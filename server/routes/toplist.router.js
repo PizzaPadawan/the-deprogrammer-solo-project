@@ -16,7 +16,6 @@ router.post('/:playlist_id', rejectUnauthenticated, (req, res) => {
 
     pool.query(queryText, [req.body.username, req.params.playlist_id])
         .then(result => {
-            console.log(result.rows)
             if (result.rows.length > 1){
              res.sendStatus(201)
             } else res.send("Invalid username")})
@@ -48,13 +47,13 @@ router.delete('/:user_id', rejectUnauthenticated, (req, res) => {
 
 // GET req to display users on selected panel for admin panel editor
 router.get('/panels/:playlist_id', rejectUnauthenticated, (req,res) => {
-    const queryText = `SELECT "playlist_id", "user"."id", "user"."username"
+    const queryText = `SELECT "playlist_id", "user"."id", "user"."username", "user"."is_admin"
     FROM "masterlist"
     JOIN "toplist" ON "toplist"."masterlist_id"="masterlist"."id"
     JOIN "playlist" ON "masterlist"."playlist_id"="playlist"."id"
     JOIN "user" ON "user"."id"="toplist"."user_id"
     WHERE "playlist_id"=$1
-    GROUP BY "masterlist"."playlist_id", "user"."id", "user"."username";`
+    GROUP BY "masterlist"."playlist_id", "user"."id", "user"."username", "user"."is_admin";`
 
     pool.query(queryText, [req.params.playlist_id])
         .then(result => {

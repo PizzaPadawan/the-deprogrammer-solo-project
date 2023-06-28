@@ -12,7 +12,14 @@ import {
     TableBody,
     TableCell,
     Paper,
-    Container
+    Container,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+    Typography,
+    Button
 } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material';
@@ -28,6 +35,9 @@ export default function PanelUsers() {
 
     // local state
     const [username, setUsername] = useState('');
+    const [userDisplay, setUserDisplay] = useState('')
+    const [userID, setUserID] = useState('')
+    const [open, setOpen] = useState(false);
 
     // dispatch to add new user to selected panel
     const addUser = () => {
@@ -49,6 +59,21 @@ export default function PanelUsers() {
         }
         // console.log({ user_id, playlist_id: currentList });
         dispatch({ type: "REMOVE_USER", payload: { user_id, playlist_id: currentList } });
+
+        // close dialog box
+        handleClose();
+    }
+
+    const handleClickOpen = (user_id, user_name) => {
+        setUserDisplay(user_name)
+        setUserID(user_id)
+        setOpen(true)
+    }
+
+    const handleClose = () => {
+        setUserDisplay('')
+        setUserID('')
+        setOpen(false)
     }
 
     // custom MUI table styles
@@ -76,22 +101,43 @@ export default function PanelUsers() {
     return (
         panelUsers.length > 0 &&
         <Container maxWidth="xs">
-            <Paper sx={{p:3, my:5}}>
+            <Paper sx={{ p: 3, my: 5 }}>
                 {/* input to add new user to panel */}
                 <TextField
-                sx={{mb:3}}
+                    sx={{ mb: 3 }}
                     type="text"
                     value={username}
                     size="small"
                     label="Username"
                     onChange={e => setUsername(e.target.value)} />
                 <IconButton
-                    sx={{ml:1}}
+                    sx={{ ml: 1 }}
                     variant="contained"
                     color="warning"
                     onClick={addUser}
-                ><AddCircleIcon/></IconButton>
-                <br />
+                ><AddCircleIcon />
+                </IconButton>
+                <Dialog open={open} onClose={handleClose}>
+                    <DialogTitle>Remove {userDisplay} from current panel?</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            <Typography variant="caption" >You will be able to re-add them later, if you wish.</Typography>
+                        </DialogContentText>
+                        <DialogActions>
+                            <Button
+                                variant="contained"
+                                color="warning"
+                                onClick={() => removeUser(userID)}
+                            >Remove</Button>
+                            <Button
+                                variant="contained"
+                                color="warning"
+                                onClick={handleClose}>
+                                Cancel
+                            </Button>
+                        </DialogActions>
+                    </DialogContent>
+                </Dialog>
                 {/* table to display currently selected panel */}
                 <TableContainer >
                     <Table>
@@ -109,10 +155,11 @@ export default function PanelUsers() {
                                             <StyledTableCell>{user.username}</StyledTableCell>
                                             <StyledTableCell>
                                                 <IconButton
-                                                variant="text"
-                                                color="error"
-                                                    onClick={() => removeUser(user.id)}
-                                                ><RemoveCircleIcon/></IconButton>
+                                                    variant="text"
+                                                    color="error"
+                                                    onClick={() => handleClickOpen(user.id, user.username)}
+                                                >
+                                                {!user.is_admin && <RemoveCircleIcon />}</IconButton>
                                             </StyledTableCell>
                                         </StyledTableRow>
                                     );
