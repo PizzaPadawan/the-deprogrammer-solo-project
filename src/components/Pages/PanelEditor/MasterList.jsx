@@ -45,6 +45,7 @@ export default function MasterList() {
     const [playlistURL, setPlaylistURL] = useState('');
     const [editDateMode, setEditDateMode] = useState(false);
     const [playlistId, setPlaylistId] = useState(0)
+    const [open, setOpen] = useState(false);
 
 
     // retreive our masterlist, enter dispatch hell
