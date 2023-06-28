@@ -21,7 +21,8 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle
+    DialogTitle,
+    Tooltip
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material';
@@ -176,7 +177,7 @@ export default function ListEditor() {
                         value={currentList}
                         label="Select an Artist"
                         onChange={e => setCurrentList(e.target.value)}>
-                        <MenuItem>Select an artist</MenuItem>
+                        <MenuItem> </MenuItem>
                         {/* if our panels store is populated, bring our available panels into the dropdown */}
                         {panels.length > 0 &&
                             panels.map(panel => {
@@ -218,9 +219,14 @@ export default function ListEditor() {
                                                     <TableCell>{track.album}</TableCell>
                                                     <TableCell>{track.notes}</TableCell>
                                                     <TableCell></TableCell>
-                                                    <TableCell><IconButton
-                                                        onClick={e => trackStatus(track.id, "SHOW")}
-                                                    ><AddCircleIcon sx={{ color: 'white' }} /></IconButton></TableCell>
+                                                    <TableCell>
+                                                        <Tooltip title="Add To List">
+                                                            <IconButton
+                                                                onClick={e => trackStatus(track.id, "SHOW")}
+                                                            ><AddCircleIcon sx={{ color: 'white' }} />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    </TableCell>
                                                 </TableRow >
                                                 : <StyledTableRow key={track.id}>
                                                     <TableCell>{index + 1}</TableCell>
@@ -229,14 +235,23 @@ export default function ListEditor() {
                                                     <TableCell>{track.notes}</TableCell>
                                                     {selectedTrack === track.track
                                                         ? <TableCell ><CreateIcon /></TableCell>
-                                                        : < TableCell > <IconButton
-                                                            onClick={() => { handleClickOpen(track.track, track.id) }}>
-                                                            <EditNoteIcon />
-                                                        </IconButton></TableCell>
+                                                        : < TableCell >
+                                                            <Tooltip title="Edit Note">
+                                                                <IconButton
+                                                                    onClick={() => { handleClickOpen(track.track, track.id) }}>
+                                                                    <EditNoteIcon />
+                                                                </IconButton>
+                                                            </Tooltip>
+                                                        </TableCell>
                                                     }
-                                                    <TableCell><IconButton
-                                                        onClick={e => trackStatus(track.id, "HIDE")}
-                                                    ><RemoveCircleIcon /></IconButton></TableCell>
+                                                    <TableCell>
+                                                        <Tooltip title="Remove From List">
+                                                            <IconButton
+                                                                onClick={e => trackStatus(track.id, "HIDE")}
+                                                            ><RemoveCircleIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    </TableCell>
                                                 </StyledTableRow >
                                         )
                                     })}
