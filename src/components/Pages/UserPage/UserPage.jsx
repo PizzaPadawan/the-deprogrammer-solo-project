@@ -5,7 +5,8 @@ import { useEffect } from 'react';
 
 //MUI
 import {
-  Button,
+  IconButton,
+  Tooltip,
   Table,
   TableContainer,
   TableHead,
@@ -14,11 +15,13 @@ import {
   TableCell,
   Typography,
   Grid,
-  Paper
+  Paper,
+  Container
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 
 
@@ -70,96 +73,166 @@ function UserPage() {
   }));
 
   return (
-    <Grid container
-      spacing={5}
-      sx={{ ml: 1 }}
-    >
-      <Grid item xs={6}>
-        <Typography variant="h5" color="warning.light" sx={{ pt: 3 }}>Welcome, {user.username}!</Typography>
-        <Paper sx={{ mt: 3 }}>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <StyledTableRow>
-                  <StyledTableCell colSpan={4} sx={{ borderBottom: 0 }}>Upcoming Panels</StyledTableCell>
-                </StyledTableRow>
-                <StyledTableRow>
-                  <StyledTableCell>Artist</StyledTableCell>
-                  <StyledTableCell>Panel</StyledTableCell>
-                  <StyledTableCell sx={{ width: 125 }}>Recording Date</StyledTableCell>
-                  <StyledTableCell sx={{ textAlign: 'center' }} ><VisibilityIcon /></StyledTableCell>
-                </StyledTableRow>
-              </TableHead>
-              <TableBody>
-                {/* mapping over our panels store to show upcoming panels the user is a part of */}
-                {panels.map(panel => {
-                  return (
-                    // conditional rendering to only return panels with recording_date greater than or equal to today's date
-                    moment(panel.recording_date).format('YYYY/MM/DD') > moment().subtract(1, 'days').format('YYYY/MM/DD') &&
-                    <StyledTableRow key={panel.playlist_id}>
-                      <StyledTableCell>{panel.artist}</StyledTableCell>
-                      <StyledTableCell>{panel.users}</StyledTableCell>
-                      <StyledTableCell>{moment(panel.recording_date).format('MM/DD/YYYY')}</StyledTableCell>
-                      <StyledTableCell><Button color="warning" onClick={() => fetchToplist(panel.playlist_id)}>Show</Button></StyledTableCell>
+    // if our toplist isn't selected, we want our Upcoming Panels table to be centered
+    !toplist.length > 0
+
+      ?
+
+      <Container maxWidth="md">
+        <Grid container
+          width="80%"
+          m='auto'>
+          <Grid item xs={12}>
+            <Typography variant="h5" color="warning.light" sx={{ pt: 3 }}>Welcome, {user.username}!</Typography>
+            <Paper sx={{ mt: 3 }}>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <StyledTableRow>
+                      <StyledTableCell colSpan={4} sx={{ borderBottom: 0 }}>Upcoming Panels</StyledTableCell>
                     </StyledTableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-      </Grid>
-      <br />
-      <Grid item>
-        {/* if toplist store is populated, display the Artist and Recording Date of selected panel */}
-        {/* <Typography variant="h6" color="warning.dark" sx={{ pt: 3 }} ></Typography>
+                    <StyledTableRow>
+                      <StyledTableCell>Artist</StyledTableCell>
+                      <StyledTableCell>Panel</StyledTableCell>
+                      <StyledTableCell sx={{ width: 125 }}>Recording Date</StyledTableCell>
+                      <StyledTableCell></StyledTableCell>
+                    </StyledTableRow>
+                  </TableHead>
+                  <TableBody>
+                    {/* mapping over our panels store to show upcoming panels the user is a part of */}
+                    {panels.map(panel => {
+                      return (
+                        // conditional rendering to only return panels with recording_date greater than or equal to today's date
+                        moment(panel.recording_date).format('YYYY/MM/DD') > moment().subtract(1, 'days').format('YYYY/MM/DD') &&
+                        <StyledTableRow key={panel.playlist_id}>
+                          <StyledTableCell>{panel.artist}</StyledTableCell>
+                          <StyledTableCell>{panel.users}</StyledTableCell>
+                          <StyledTableCell>{moment(panel.recording_date).format('MM/DD/YYYY')}</StyledTableCell>
+                          <StyledTableCell>
+                            <Tooltip title="Show toplist preview">
+                              <IconButton onClick={() => fetchToplist(panel.playlist_id)}>
+                                <VisibilityOffIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </StyledTableCell>
+                        </StyledTableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
+
+      :
+
+      <Container maxWidth='xl'>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Typography variant="h5" color="warning.light" sx={{ pt: 3 }}>Welcome, {user.username}!</Typography>
+            <Paper sx={{ mt: 3 }}>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <StyledTableRow>
+                      <StyledTableCell colSpan={4} sx={{ borderBottom: 0 }}>Upcoming Panels</StyledTableCell>
+                    </StyledTableRow>
+                    <StyledTableRow>
+                      <StyledTableCell>Artist</StyledTableCell>
+                      <StyledTableCell>Panel</StyledTableCell>
+                      <StyledTableCell sx={{ width: 125 }}>Recording Date</StyledTableCell>
+                      <StyledTableCell sx={{ textAlign: 'center' }} ></StyledTableCell>
+                    </StyledTableRow>
+                  </TableHead>
+                  <TableBody>
+                    {/* mapping over our panels store to show upcoming panels the user is a part of */}
+                    {panels.map(panel => {
+                      return (
+                        // conditional rendering to only return panels with recording_date greater than or equal to today's date
+                        moment(panel.recording_date).format('YYYY/MM/DD') > moment().subtract(1, 'days').format('YYYY/MM/DD')
+                          ? <StyledTableRow key={panel.playlist_id}>
+                            <StyledTableCell>{panel.artist}</StyledTableCell>
+                            <StyledTableCell>{panel.users}</StyledTableCell>
+                            <StyledTableCell>{moment(panel.recording_date).format('MM/DD/YYYY')}</StyledTableCell>
+                            {panel.playlist_id === toplist[0].playlist_id
+                              ? <StyledTableCell>
+                                <IconButton color="warning" onClick={() => fetchToplist(0)}>
+                                  <VisibilityIcon />
+                                </IconButton>
+                              </StyledTableCell>
+                              : <StyledTableCell>
+                                <IconButton onClick={() => fetchToplist(panel.playlist_id)}>
+                                  <VisibilityOffIcon />
+                                </IconButton>
+                              </StyledTableCell>
+                            }
+                          </StyledTableRow>
+                          : null
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={6}>
+            {/* if toplist store is populated, display the Artist and Recording Date of selected panel */}
+            {/* <Typography variant="h6" color="warning.dark" sx={{ pt: 3 }} ></Typography>
         <Typography variant="h6" color="secondary.dark" sx={{ pb: 2 }}></Typography> */}
-        {toplist.length > 0
-          ? <Paper sx={{ mt: 10 }}>
-            <TableContainer sx={{ maxHeight: 400, width: 600 }} >
-              <Table stickyHeader>
-                <TableHead>
-                  <StyledTableRow>
-                    <TableCell
-                      colSpan={2}
-                      sx={{borderBottom:0,
-                      backgroundColor:'black',
-                      color:'#f57c00'}}
-                    >{toplist.length > 0 && toplist[0].artist}</TableCell>
-                    <TableCell
-                      colSpan={1}
-                      align='right'
-                      sx={{borderBottom:0,
-                      backgroundColor:'black',
-                      color:'#ab47bc'}}
-                    >{toplist.length > 0 && moment(toplist[0].recording_date).format('MM/DD/YYYY')}</TableCell>
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <StyledTableCell sx={{ textAlign: 'center' }} ><FormatListNumberedIcon /></StyledTableCell>
-                    <StyledTableCell sx={{ width: 300 }}>Track</StyledTableCell>
-                    <StyledTableCell>Album</StyledTableCell>
-                  </StyledTableRow>
-                </TableHead>
-                <TableBody>
-                  {toplist.map((track, index) => {
-                    return (
-                      !track.hidden &&
-                      <StyledTableRow key={track.id}>
-                        <StyledTableCell>{index + 1}</StyledTableCell>
-                        <StyledTableCell>{track.track}</StyledTableCell>
-                        <StyledTableCell>{track.album}</StyledTableCell>
+            {toplist.length > 0
+              ? <Paper sx={{ mt: 10 }}>
+                <TableContainer sx={{ maxHeight: 400 }} >
+                  <Table stickyHeader>
+                    <TableHead>
+                      <StyledTableRow>
+                        <TableCell
+                          colSpan={2}
+                          sx={{
+                            borderBottom: 0,
+                            backgroundColor: 'black',
+                            color: '#f57c00'
+                          }}
+                        >{toplist.length > 0 && `Your current list for ${toplist[0].artist}`}</TableCell>
+                        <TableCell
+                          colSpan={1}
+                          align='right'
+                          sx={{
+                            borderBottom: 0,
+                            backgroundColor: 'black',
+                            color: '#ab47bc'
+                          }}
+                        >{toplist.length > 0 && moment(toplist[0].recording_date).format('MM/DD/YYYY')}</TableCell>
                       </StyledTableRow>
-                    )
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
-          : <Paper>
-          </Paper>
-        }
-      </Grid>
-    </Grid>
+                      <StyledTableRow>
+                        <StyledTableCell sx={{ textAlign: 'center' }} ><FormatListNumberedIcon /></StyledTableCell>
+                        <StyledTableCell sx={{ width: 300 }}>Track</StyledTableCell>
+                        <StyledTableCell>Album</StyledTableCell>
+                      </StyledTableRow>
+                    </TableHead>
+                    <TableBody>
+                      {toplist.map((track, index) => {
+                        return (
+                          !track.hidden &&
+                          <StyledTableRow key={track.id}>
+                            <StyledTableCell>{index + 1}</StyledTableCell>
+                            <StyledTableCell>{track.track}</StyledTableCell>
+                            <StyledTableCell>{track.album}</StyledTableCell>
+                          </StyledTableRow>
+                        )
+                      })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Paper>
+              : <Paper>
+              </Paper>
+            }
+          </Grid>
+        </Grid>
+      </Container>
   );
 }
 
