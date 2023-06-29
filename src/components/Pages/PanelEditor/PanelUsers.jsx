@@ -117,6 +117,8 @@ export default function PanelUsers() {
                     onClick={addUser}
                 ><AddCircleIcon />
                 </IconButton>
+
+                {/* Dialog popup to confirm that the user wants to delete selected user from panel */}
                 <Dialog open={open} onClose={handleClose}>
                     <DialogTitle>Remove {userDisplay} from current panel?</DialogTitle>
                     <DialogContent>
@@ -138,6 +140,7 @@ export default function PanelUsers() {
                         </DialogActions>
                     </DialogContent>
                 </Dialog>
+                
                 {/* table to display currently selected panel */}
                 <TableContainer >
                     <Table>
