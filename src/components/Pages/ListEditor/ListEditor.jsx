@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import moment from "moment";
+import EditDialog from "./EditDialog";
 
 //MUI
 import {
@@ -17,11 +18,6 @@ import {
     Paper,
     TextField,
     MenuItem,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
     Tooltip
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -46,7 +42,6 @@ export default function ListEditor() {
     const currentList = useSelector(store => store.currentList)
 
     // local state
-    const [newNotes, setNewNotes] = useState('');
     const [selectedTrack, setSelectedTrack] = useState('');
     const [selectedTrackID, setSelectedTrackID] = useState('');
     const [open, setOpen] = useState(false);
@@ -124,7 +119,8 @@ export default function ListEditor() {
     };
 
     // click handler to submit new track notes
-    const editNote = () => {
+    const editNote = (newNotes) => {
+        // console.log(selectedTrack, selectedTrackID, newNotes)
         // give me validation
         if (!selectedTrack || !selectedTrackID || !newNotes) {
             alert("Please ensure you've selected a track and entered a note before submitting.")
@@ -139,7 +135,6 @@ export default function ListEditor() {
                 playlist_id: currentList
             }
         })
-        setNewNotes('');
         setSelectedTrack('')
         setOpen(false);
     }
@@ -148,26 +143,14 @@ export default function ListEditor() {
     return (
         <Container >
             <Paper sx={{ my: 5, py: 3 }}>
-                <Dialog open={open} onClose={handleClose}>
-                    <DialogTitle>Edit Notes for {selectedTrack}</DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            sx={{ width: 400 }}
-                            rows={5}
-                            multiline
-                            value={newNotes}
-                            onChange={e => setNewNotes(e.target.value)}
-                            placeholder={`How do you feel about this song?`}
-                            maxLength="1000"
-                        />
-                        <DialogActions>
-                            <Button variant="contained" color="warning" onClick={editNote} >Save</Button>
-                        </DialogActions>
-                        <DialogContentText>
-                            <Typography variant="caption">Hit the ESC key or click outside this box cancel changes</Typography>
-                        </DialogContentText>
-                    </DialogContent>
-                </Dialog>
+                {/* Dialog box to edit notes per track */}
+                <EditDialog
+                    open={open}
+                    handleClose={handleClose}
+                    editNote={editNote}
+                    selectedTrack={selectedTrack}
+                />
+
                 <Container sx={{ my: 3 }}>
                     {/* this dropdown allows the user to select between all artist they're on a panel for */}
                     <TextField
@@ -177,7 +160,7 @@ export default function ListEditor() {
                         value={currentList}
                         label="Select an Artist"
                         onChange={e => setCurrentList(e.target.value)}>
-                        <MenuItem> </MenuItem>
+                        <MenuItem value={0} >Select an artist</MenuItem>
                         {/* if our panels store is populated, bring our available panels into the dropdown */}
                         {panels.length > 0 &&
                             panels.map(panel => {
@@ -191,11 +174,14 @@ export default function ListEditor() {
                                 );
                             })}
                     </TextField>
+
                     {/* this button allows the user to commit to displaying the artist selected from the dropdown */}
                     <Button variant="contained" color="warning" sx={{ mx: 1 }} onClick={() => fetchToplist(currentList)}>Select</Button>
+
                     {toplist.length > 0 &&
                         <Typography variant="h6" sx={{ mt: 2 }} >{moment(toplist[0].recording_date).format('MM/DD/YYYY')} </Typography>}
                     {/* if our toplist is populated, show the recording date for this panel */}
+
                     {toplist.length > 0 &&
                         <TableContainer sx={{ maxHeight: 500, my: 3 }}>
                             <Table stickyHeader>
@@ -205,7 +191,7 @@ export default function ListEditor() {
                                         <StyledTableCell>Track</StyledTableCell>
                                         <StyledTableCell>Album</StyledTableCell>
                                         <StyledTableCell>Notes</StyledTableCell>
-                                        <StyledTableCell><CreateIcon /></StyledTableCell>
+                                        <StyledTableCell></StyledTableCell>
                                         <StyledTableCell><PlaylistAddCheckIcon /></StyledTableCell>
                                     </StyledTableRow >
                                 </TableHead>
@@ -213,6 +199,8 @@ export default function ListEditor() {
                                     {toplist.map((track, index) => {
                                         return (
                                             track.hidden
+                                                // Grey out the track row if this track has been 'removed' (hidden=true) from the top list,
+                                                // and remove the Edit Notes button
                                                 ? <TableRow sx={{ backgroundColor: "darkgray" }} key={track.id}>
                                                     <StyledTableCell>{index + 1}</StyledTableCell>
                                                     <StyledTableCell>{track.track}</StyledTableCell>

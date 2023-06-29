@@ -79,9 +79,9 @@ export default function PanelUsers() {
     }
 
     const handleClose = () => {
+        setOpen(false)
         setUserDisplay('')
         setUserID('')
-        setOpen(false)
     }
 
     // custom MUI table styles
