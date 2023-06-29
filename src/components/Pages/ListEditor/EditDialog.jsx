@@ -55,5 +55,4 @@ export default function EditDialog({ editNote, handleClose, open, selectedTrack 
             </DialogContent>
         </Dialog>
     )
-
 }
