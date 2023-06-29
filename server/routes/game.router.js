@@ -66,7 +66,6 @@ router.delete('/discussion/:playlist_id', rejectUnauthenticated, async (req, res
 // GET route to display current tallies for gameplay
 router.get('/tallies/:playlist_id', rejectUnauthenticated, (req, res) => {
     const playlistId = req.params.playlist_id;
-    console.log(playlistId)
 
     const queryText = `
     SELECT
