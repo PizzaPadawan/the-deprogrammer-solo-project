@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 //MUI
@@ -35,6 +35,37 @@ export default function PlayPage() {
 
     const dispatch = useDispatch();
 
+    // instantiating useRef for setInterval
+    const intervalRef = useRef(null);
+
+    // useEffect dependent on masterlist store state to: 
+    // fire setInterval if our masterlist is in game_mode = true,
+    // and clearInterval if changed to false
+    useEffect(() => {
+        intervalRef.current = setInterval(() => {
+            if (masterlist.length > 0 && masterlist[0].game_mode) {
+                dispatch({
+                    type: "FETCH_GAMELIST",
+                    payload: {
+                        playlist_id: currentList
+                    }
+                });
+                dispatch({
+                    type: "FETCH_MASTERLIST",
+                    payload: {
+                        playlist_id: currentList
+                    }
+                });
+            }
+        }, 2000);
+
+        return () => {
+            clearInterval(intervalRef.current);
+        };
+
+    }, [masterlist])
+        
+    // page load dispatches
     useEffect(() => {
         dispatch({
             type: "FETCH_MASTERLIST",
@@ -54,16 +85,15 @@ export default function PlayPage() {
                 playlist_id: currentList
             }
         })
+
     }, []);
 
-    // declaring intervalId to use for setInterval function
-    // let intervalId;
+
 
     const gameMode = (status) => {
         // status variable contains a string indicating whether to START the game by setting
         // game_mode === true, or STOP the game by setting game_mode === false.
         if (status === "START") {
-
             dispatch({
                 type: "GAME_MODE",
                 payload: {
@@ -71,19 +101,7 @@ export default function PlayPage() {
                     switch: status
                 }
             })
-
-            // intervalId = setInterval(
-            //     dispatch({
-            //         type: "FETCH_GAMELIST",
-            //         payload: {
-            //             playlist_id: currentList
-            //         }
-            //     }), 5000)
-
-        } else if (status === "STOP") {
-
-            // clearInterval(intervalId)
-
+        } else if (status === "STOP") { 
             dispatch({
                 type: "GAME_MODE",
                 payload: {
@@ -96,7 +114,6 @@ export default function PlayPage() {
 
     // onClick for users to mark selected song as is_played === true
     const playSong = (masterlist_id) => {
-        console.log({ masterlist_id });
 
         dispatch({
             type: "PLAY_SONG",
@@ -234,8 +251,8 @@ export default function PlayPage() {
                                                         <StyledTableRow key={track.track} >
                                                             <StyledTableCell>{track.track}</StyledTableCell>
                                                             <StyledTableCell>{track.album}</StyledTableCell>
-                                                            {Object.values(track.result).map(result => {
-                                                                return (<StyledTableCell>{result}</StyledTableCell>)
+                                                            {Object.values(track.result).map((result, index) => {
+                                                                return (<StyledTableCell key={index}>{result}</StyledTableCell>)
                                                             })}
                                                         </StyledTableRow >
                                                     )
