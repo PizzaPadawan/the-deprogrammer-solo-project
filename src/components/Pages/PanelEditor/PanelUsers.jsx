@@ -46,6 +46,14 @@ export default function PanelUsers() {
             alert("Please enter a valid username and select a panel")
             return;
         }
+
+        for(let user of panelUsers){
+            if(username === user.username){
+                alert("Cannot add duplicate user")
+                return;
+            }
+        }
+
         // console.log({ currentList, username })
         dispatch({ type: "ADD_USER", payload: { playlist_id: currentList, username } })
         setUsername('')
