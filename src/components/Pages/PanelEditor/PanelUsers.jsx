@@ -165,12 +165,13 @@ export default function PanelUsers() {
                                         <StyledTableRow key={user.id}>
                                             <StyledTableCell>{user.username}</StyledTableCell>
                                             <StyledTableCell>
+                                            {!user.is_admin && 
                                                 <IconButton
                                                     variant="text"
                                                     color="error"
                                                     onClick={() => handleClickOpen(user.id, user.username)}
                                                 >
-                                                {!user.is_admin && <RemoveCircleIcon />}</IconButton>
+                                                <RemoveCircleIcon /></IconButton>}
                                             </StyledTableCell>
                                         </StyledTableRow>
                                     );

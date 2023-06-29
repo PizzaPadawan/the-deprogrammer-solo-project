@@ -89,7 +89,7 @@ function AboutPage() {
 
         <Container>
           <Typography variant="h4">How was this made?</Typography>
-          <Typography variant="body2" sx={{ pt: 2 }}>The Deprogrammer was my solo project for Tier 3 during my time studying Full-stack Javascript at Emerging Digital Academy.
+          <Typography variant="body1" sx={{ pt: 2 }}>The Deprogrammer was my solo project for Tier 3 during my time studying Full-stack Javascript at Emerging Digital Academy.
             The process of creating this project involved a week of planning, which involved creating wireframes on moqups.com to display
             my ideas for each page, creating an Entity Relationship Diagram on dbdesigner.net to plan my database tables and their relationships,
             as well as importing screenshots of these into a scope document outlining the details and timeline of the project.
@@ -97,117 +97,67 @@ function AboutPage() {
           <Typography variant="body1" sx={{ pt: 3 }}>This application was built using the following frameworks and tools:</Typography>
 
           <Grid container spacing={5} sx={{ m: 'auto', pb:3 }}>
-            <Grid item>
-              <Typography variant="body1" align='center' sx={{ py: 2 }} >Full Stack:</Typography>
 
+            <Grid item xs={6}>
+              <Typography variant="body1" align='left' sx={{ py: 2 }}>Back End:</Typography>
               <List>
                 <ListItem>
                   <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>VSCode</ListItemText>
-                </ListItem>
-
-                <ListItem>
-                  <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>git / GitHub</ListItemText>
-                </ListItem>
-
-                <ListItem>
-                  <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>Node.js</ListItemText>
-                </ListItem>
-
-                <ListItem>
-                  <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>npm</ListItemText>
-                </ListItem>
-              </List>
-            </Grid>
-
-            <Grid item>
-              <Typography variant="body1" align='center' sx={{ py: 2 }}>Backend:</Typography>
-              <List>
-                <ListItem>
-                  <ListItemIcon><DataObjectIcon /></ListItemIcon>
                   <ListItemText>PostgreSQL</ListItemText>
                 </ListItem>
 
                 <ListItem>
-                  <ListItemIcon><DataObjectIcon /></ListItemIcon>
-                  <ListItemText>Postico</ListItemText>
-                </ListItem>
-
-                <ListItem>
-                  <ListItemIcon><DataObjectIcon /></ListItemIcon>
-                  <ListItemText>Postman</ListItemText>
-                </ListItem>
-
-                <ListItem>
-                  <ListItemIcon><DataObjectIcon /></ListItemIcon>
+                  <ListItemIcon><CodeIcon /></ListItemIcon>
                   <ListItemText>Express.js</ListItemText>
                 </ListItem>
 
                 <ListItem>
-                  <ListItemIcon><DataObjectIcon /></ListItemIcon>
+                  <ListItemIcon><CodeIcon /></ListItemIcon>
                   <ListItemText>Axios</ListItemText>
                 </ListItem>
 
                 <ListItem>
-                  <ListItemIcon><DataObjectIcon /></ListItemIcon>
-                  <ListItemText>Passport.js</ListItemText>
-                </ListItem>
-
-                <ListItem>
-                  <ListItemIcon><DataObjectIcon /></ListItemIcon>
-                  <ListItemText>Cookie-Session</ListItemText>
-                </ListItem>
-
-                <ListItem>
-                  <ListItemIcon><DataObjectIcon /></ListItemIcon>
-                  <ListItemText>BCrypt</ListItemText>
-                </ListItem>
-
-                <ListItem>
-                  <ListItemIcon><DataObjectIcon /></ListItemIcon>
+                  <ListItemIcon><CodeIcon /></ListItemIcon>
                   <ListItemText>Spotify API</ListItemText>
                 </ListItem>
               </List>
             </Grid>
 
-            <Grid item>
-              <Typography variant="body1" align='center' sx={{ py: 2 }}>Front End:</Typography>
+            <Grid item xs={6}>
+              <Typography variant="body1" align='left' sx={{ py: 2 }}>Front End:</Typography>
               <List>
                 <ListItem>
-                  <ListItemIcon><CodeOffIcon /></ListItemIcon>
+                  <ListItemIcon><CodeIcon /></ListItemIcon>
                   <ListItemText>React</ListItemText>
                 </ListItem>
 
                 <ListItem>
-                  <ListItemIcon><CodeOffIcon /></ListItemIcon>
+                  <ListItemIcon><CodeIcon /></ListItemIcon>
                   <ListItemText>React Redux</ListItemText>
                 </ListItem>
 
                 <ListItem>
-                  <ListItemIcon><CodeOffIcon /></ListItemIcon>
+                  <ListItemIcon><CodeIcon /></ListItemIcon>
                   <ListItemText>Redux Saga</ListItemText>
                 </ListItem>
 
                 <ListItem>
-                  <ListItemIcon><CodeOffIcon /></ListItemIcon>
+                  <ListItemIcon><CodeIcon /></ListItemIcon>
                   <ListItemText>React Router</ListItemText>
                 </ListItem>
 
                 <ListItem>
-                  <ListItemIcon><CodeOffIcon /></ListItemIcon>
+                  <ListItemIcon><CodeIcon /></ListItemIcon>
                   <ListItemText>moment.js</ListItemText>
                 </ListItem>
 
                 <ListItem>
-                  <ListItemIcon><CodeOffIcon /></ListItemIcon>
+                  <ListItemIcon><CodeIcon /></ListItemIcon>
                   <ListItemText>Axios</ListItemText>
                 </ListItem>
 
                 <ListItem>
-                  <ListItemIcon><CodeOffIcon /></ListItemIcon>
+                  <ListItemIcon><CodeIcon /></ListItemIcon>
                   <ListItemText>Material UI</ListItemText>
                 </ListItem>
               </List>

@@ -36,7 +36,7 @@ export default function EditDialog({ editNote, handleClose, open, selectedTrack 
                         <IconButton
                             variant="contained"
                             color="warning"
-                            onClick={() => editNote(newNotes)}
+                            onClick={() => {editNote(newNotes); setNewNotes('')}}
                         ><SaveIcon />
                         </IconButton>
                     </Tooltip>
