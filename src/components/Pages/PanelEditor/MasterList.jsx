@@ -241,7 +241,7 @@ export default function MasterList() {
 
                     <Grid item xs={12}>
                         {/* if we have selected a playlist_id, we'll render the masterlist for it here */}
-                        {currentList > 0 &&
+                        {masterlist[0] &&
                             <TableContainer sx={{ maxHeight: 425 }}>
                                 <Table stickyHeader >
                                     <TableHead>

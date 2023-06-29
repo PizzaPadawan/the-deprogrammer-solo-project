@@ -7,11 +7,11 @@ import { Grid, Container } from "@mui/material";
 
 export default function PanelEditor() {
 
-    const currentList = useSelector(store => store.currentList)
+    const masterlist = useSelector(store => store.masterlist)
 
     return (
         <Container>
-            { currentList
+            { masterlist[0]
                 ?<Grid container>
                     <Grid item xs={4}>
                         <PanelUsers />

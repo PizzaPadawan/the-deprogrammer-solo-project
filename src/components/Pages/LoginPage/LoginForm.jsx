@@ -31,7 +31,7 @@ function LoginForm() {
     > 
         <Typography variant="h5" align="center" sx={{p:1, m:2}}>Login</Typography>
         {errors.loginMessage && (
-          <Typography variant="h6" className="alert" role="alert">
+          <Typography sx={{mb:2}} color="error" variant="body2" className="alert" role="alert">
             {errors.loginMessage}
           </Typography>
         )}
