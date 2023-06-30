@@ -31,7 +31,7 @@ function UserPage() {
   const user = useSelector((store) => store.user);
   const panels = useSelector((store) => store.toplist.panelReducer);
   const toplist = useSelector((store) => store.toplist.toplistReducer);
-  const currentList = useSelector(store => store.currentList)
+  // const currentList = useSelector(store => store.currentList)
   const dispatch = useDispatch();
 
   useEffect(() => {

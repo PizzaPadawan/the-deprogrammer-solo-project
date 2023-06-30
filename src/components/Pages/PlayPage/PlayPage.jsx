@@ -236,11 +236,9 @@ export default function PlayPage() {
                                                 <StyledTableRow >
                                                     <StyledTableCell>Track</StyledTableCell>
                                                     <StyledTableCell>Album</StyledTableCell>
-                                                    {gamelist.map(track => {
-                                                       return (Object.keys(track.result).map((result, index) => {
+                                                    {Object.keys(gamelist[0].result).map((result, index) => {
                                                             return (<StyledTableCell key={index}>{result}</StyledTableCell>)
-                                                        }))
-                                                    })}
+                                                        })}
                                                 </StyledTableRow >
                                             </TableHead>
                                             <TableBody>
