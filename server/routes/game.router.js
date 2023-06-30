@@ -74,7 +74,7 @@ router.get('/tallies/:playlist_id', rejectUnauthenticated, (req, res) => {
         jsonb_object_agg(
         "username",
         "individual_tally"
-        ) || jsonb_build_object('total', SUM("individual_tally")) AS "result"
+        ) || jsonb_build_object('Total', SUM("individual_tally")) AS "result"
     FROM (
     SELECT
         "track",

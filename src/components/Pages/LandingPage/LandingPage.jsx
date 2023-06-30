@@ -4,12 +4,13 @@ import { Grid, Typography, Button, Container, Paper } from '@mui/material';
 
 // CUSTOM COMPONENTS
 import RegisterForm from '../RegisterPage/RegisterForm';
+import LoginForm from '../LoginPage/LoginForm';
 
 function LandingPage() {
   const history = useHistory();
 
-  const onLogin = (event) => {
-    history.push('/login');
+  const onRegister = (event) => {
+    history.push('/registration');
   };
 
   return (
@@ -33,10 +34,11 @@ function LandingPage() {
           </Grid>
 
           <Grid item xs={3}>
-            <RegisterForm />
-            <Typography align="center" variant="h5">Already a Member?</Typography>
-            <Button sx={{ mx: 2.9, mt: 1.5, mb: 4, px: 12.2 }} variant="contained" color="warning" onClick={onLogin}>
-              Login
+            {/* <RegisterForm /> */}
+            <LoginForm/>
+            <Typography align="center" variant="h5">Not a Member?</Typography>
+            <Button sx={{ mx: 2.9, mt: 1.5, mb: 4, px: 11 }} variant="contained" color="warning" onClick={onRegister}>
+              Register
             </Button>
           </Grid>
 

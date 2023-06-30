@@ -109,7 +109,7 @@ function UserPage() {
                           <StyledTableCell>{panel.users}</StyledTableCell>
                           <StyledTableCell>{moment(panel.recording_date).format('MM/DD/YYYY')}</StyledTableCell>
                           <StyledTableCell>
-                            <Tooltip title="Show toplist preview">
+                            <Tooltip title="Show your top songs list">
                               <IconButton onClick={() => fetchToplist(panel.playlist_id)}>
                                 <VisibilityOffIcon />
                               </IconButton>

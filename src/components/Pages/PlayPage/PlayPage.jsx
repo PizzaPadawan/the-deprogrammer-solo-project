@@ -64,7 +64,7 @@ export default function PlayPage() {
         };
 
     }, [masterlist])
-        
+
     // page load dispatches
     useEffect(() => {
         dispatch({
@@ -101,7 +101,7 @@ export default function PlayPage() {
                     switch: status
                 }
             })
-        } else if (status === "STOP") { 
+        } else if (status === "STOP") {
             dispatch({
                 type: "GAME_MODE",
                 payload: {
@@ -236,13 +236,11 @@ export default function PlayPage() {
                                                 <StyledTableRow >
                                                     <StyledTableCell>Track</StyledTableCell>
                                                     <StyledTableCell>Album</StyledTableCell>
-                                                    <StyledTableCell>Total</StyledTableCell>
-                                                    {panelUsers.length > 0 &&
-                                                        panelUsers.map(user => {
-                                                            return (
-                                                                <StyledTableCell key={user.id}>{user.username}</StyledTableCell>
-                                                            )
-                                                        })}
+                                                    {gamelist.map(track => {
+                                                       return (Object.keys(track.result).map((result, index) => {
+                                                            return (<StyledTableCell key={index}>{result}</StyledTableCell>)
+                                                        }))
+                                                    })}
                                                 </StyledTableRow >
                                             </TableHead>
                                             <TableBody>
