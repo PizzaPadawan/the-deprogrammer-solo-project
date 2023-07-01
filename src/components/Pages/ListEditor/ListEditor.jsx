@@ -22,6 +22,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material';
+// MUI Icons
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -106,12 +107,14 @@ export default function ListEditor() {
         })
     }
 
+    // Click handler for opening EditDialog
     const handleClickOpen = (track, trackID) => {
         setSelectedTrack(track);
         setSelectedTrackID(trackID);
         setOpen(true);
     };
 
+    // Click handler for closing EditDialog
     const handleClose = () => {
         setSelectedTrack('')
         setSelectedTrackID('')
@@ -121,9 +124,9 @@ export default function ListEditor() {
     // click handler to submit new track notes
     const editNote = (newNotes) => {
         // console.log(selectedTrack, selectedTrackID, newNotes)
-        // give me validation
-        if (!selectedTrack || !selectedTrackID || !newNotes) {
-            alert("Please ensure you've selected a track and entered a note before submitting.")
+        // validate inputs
+        if (!newNotes) {
+            alert("Please ensure you've entered a note before submitting.")
             return;
         }
 
@@ -135,7 +138,9 @@ export default function ListEditor() {
                 playlist_id: currentList
             }
         })
+        // clear inputs, close Dialog
         setSelectedTrack('')
+        setSelectedTrackID('')
         setOpen(false);
     }
 
@@ -179,73 +184,86 @@ export default function ListEditor() {
                     <Button variant="contained" color="warning" sx={{ mx: 1 }} onClick={() => fetchToplist(currentList)}>Select</Button>
 
                     {toplist.length > 0 &&
-                        <Typography variant="h6" sx={{ mt: 2 }} >{moment(toplist[0].recording_date).format('MM/DD/YYYY')} </Typography>}
-                    {/* if our toplist is populated, show the recording date for this panel */}
-
-                    {toplist.length > 0 &&
-                        <TableContainer sx={{ maxHeight: 500, my: 3 }}>
-                            <Table stickyHeader>
-                                <TableHead>
-                                    <StyledTableRow >
-                                        <StyledTableCell><FormatListNumberedIcon /></StyledTableCell>
-                                        <StyledTableCell>Track</StyledTableCell>
-                                        <StyledTableCell>Album</StyledTableCell>
-                                        <StyledTableCell>Notes</StyledTableCell>
-                                        <StyledTableCell></StyledTableCell>
-                                        <StyledTableCell><PlaylistAddCheckIcon /></StyledTableCell>
-                                    </StyledTableRow >
-                                </TableHead>
-                                <TableBody>
-                                    {toplist.map((track, index) => {
-                                        return (
-                                            track.hidden
-                                                // Grey out the track row if this track has been 'removed' (hidden=true) from the top list,
-                                                // and remove the Edit Notes button
-                                                ? <TableRow sx={{ backgroundColor: "darkgray" }} key={track.id}>
-                                                    <StyledTableCell>{index + 1}</StyledTableCell>
-                                                    <StyledTableCell>{track.track}</StyledTableCell>
-                                                    <StyledTableCell>{track.album}</StyledTableCell>
-                                                    <StyledTableCell>{track.notes}</StyledTableCell>
-                                                    <StyledTableCell></StyledTableCell>
-                                                    <StyledTableCell>
-                                                        <Tooltip title="Add To List">
-                                                            <IconButton
-                                                                onClick={e => trackStatus(track.id, "SHOW")}
-                                                            ><AddCircleIcon sx={{ color: 'white' }} />
-                                                            </IconButton>
-                                                        </Tooltip>
-                                                    </StyledTableCell>
-                                                </TableRow >
-                                                : <StyledTableRow key={track.id}>
-                                                    <StyledTableCell>{index + 1}</StyledTableCell>
-                                                    <StyledTableCell>{track.track}</StyledTableCell>
-                                                    <StyledTableCell>{track.album}</StyledTableCell>
-                                                    <StyledTableCell>{track.notes}</StyledTableCell>
-                                                    {selectedTrack === track.track
-                                                        ? <StyledTableCell ><CreateIcon /></StyledTableCell>
-                                                        : < StyledTableCell >
-                                                            <Tooltip title="Edit Note">
+                        <>
+                        {/* Recording Date header */}
+                            <Typography
+                                variant="h6"
+                                align="right"
+                                sx={{ mt: 2 }} >
+                                Recording date: {moment(toplist[0].recording_date).format('MM/DD/YYYY')}
+                            </Typography>
+                            {/* Toplist table */}
+                            <TableContainer sx={{ maxHeight: 500, my: 3 }}>
+                                <Table stickyHeader>
+                                    <TableHead>
+                                        <StyledTableRow >
+                                            <StyledTableCell><FormatListNumberedIcon /></StyledTableCell>
+                                            <StyledTableCell>Track</StyledTableCell>
+                                            <StyledTableCell>Album</StyledTableCell>
+                                            <StyledTableCell>Notes</StyledTableCell>
+                                            <StyledTableCell></StyledTableCell>
+                                            <StyledTableCell><PlaylistAddCheckIcon /></StyledTableCell>
+                                        </StyledTableRow >
+                                    </TableHead>
+                                    <TableBody>
+                                        {toplist.map((track, index) => {
+                                            return (
+                                                track.hidden
+                                                    // Grey out the track row if this track has been 'removed' (hidden=true) from the top list,
+                                                    // and remove the Edit Notes button
+                                                    ? <TableRow sx={{ backgroundColor: "darkgray" }} key={track.id}>
+                                                        {/* index row to show number of songs on list */}
+                                                        <StyledTableCell>{index + 1}</StyledTableCell>
+                                                        <StyledTableCell>{track.track}</StyledTableCell>
+                                                        <StyledTableCell>{track.album}</StyledTableCell>
+                                                        <StyledTableCell>{track.notes}</StyledTableCell>
+                                                        <StyledTableCell></StyledTableCell>
+                                                        <StyledTableCell>
+                                                            {/* Button to add track back to toplist */}
+                                                            <Tooltip title="Add To List">
                                                                 <IconButton
-                                                                    onClick={() => { handleClickOpen(track.track, track.id) }}>
-                                                                    <EditNoteIcon />
+                                                                    onClick={e => trackStatus(track.id, "SHOW")}
+                                                                ><AddCircleIcon sx={{ color: 'white' }} />
                                                                 </IconButton>
                                                             </Tooltip>
                                                         </StyledTableCell>
-                                                    }
-                                                    <StyledTableCell>
-                                                        <Tooltip title="Remove From List">
-                                                            <IconButton
-                                                                onClick={e => trackStatus(track.id, "HIDE")}
-                                                            ><RemoveCircleIcon />
-                                                            </IconButton>
-                                                        </Tooltip>
-                                                    </StyledTableCell>
-                                                </StyledTableRow >
-                                        )
-                                    })}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                                                    </TableRow >
+                                                    // if song is still on toplist, show as normal
+                                                    : <StyledTableRow key={track.id}>
+                                                        {/* index row to show number of songs on list */}
+                                                        <StyledTableCell>{index + 1}</StyledTableCell>
+                                                        <StyledTableCell>{track.track}</StyledTableCell>
+                                                        <StyledTableCell>{track.album}</StyledTableCell>
+                                                        <StyledTableCell>{track.notes}</StyledTableCell>
+                                                        {selectedTrack === track.track
+                                                            // if this is the track with notes currently being edited, show CreateIcon
+                                                            ? <StyledTableCell ><CreateIcon /></StyledTableCell>
+                                                            // if this is not currently selected, show the EditNote IconButton to open EditDialog
+                                                            : < StyledTableCell >
+                                                                <Tooltip title="Edit Note">
+                                                                    <IconButton
+                                                                        onClick={() => { handleClickOpen(track.track, track.id) }}>
+                                                                        <EditNoteIcon />
+                                                                    </IconButton>
+                                                                </Tooltip>
+                                                            </StyledTableCell>
+                                                        }
+                                                        <StyledTableCell>
+                                                            {/* Button to remove track from toplist */}
+                                                            <Tooltip title="Remove From List">
+                                                                <IconButton
+                                                                    onClick={e => trackStatus(track.id, "HIDE")}
+                                                                ><RemoveCircleIcon />
+                                                                </IconButton>
+                                                            </Tooltip>
+                                                        </StyledTableCell>
+                                                    </StyledTableRow >
+                                            )
+                                        })}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </>
                     }
                 </Container>
             </Paper>

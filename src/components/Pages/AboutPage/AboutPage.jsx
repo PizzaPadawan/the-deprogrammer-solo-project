@@ -118,6 +118,32 @@ function AboutPage() {
                   </ListItemText>
                 </ListItem>
 
+                <ListItem>
+                  <ListItemIcon><CodeIcon /></ListItemIcon>
+                  <ListItemText>
+                    <Link href="https://www.passportjs.org/">
+                      Passport.js
+                    </Link>
+                  </ListItemText>
+                </ListItem>
+
+                <ListItem>
+                  <ListItemIcon><CodeIcon /></ListItemIcon>
+                  <ListItemText>
+                    <Link href="https://www.npmjs.com/package/bcryptjs">
+                      bcrypt.js
+                    </Link>
+                  </ListItemText>
+                </ListItem>
+
+                <ListItem>
+                  <ListItemIcon><CodeIcon /></ListItemIcon>
+                  <ListItemText>
+                    <Link href="https://www.npmjs.com/package/cookie-session">
+                      cookie-session
+                    </Link>
+                  </ListItemText>
+                </ListItem>
 
                 <ListItem>
                   <ListItemIcon><CodeIcon /></ListItemIcon>
@@ -163,6 +189,15 @@ function AboutPage() {
                 <ListItem>
                   <ListItemIcon><CodeIcon /></ListItemIcon>
                   <ListItemText>
+                    <Link href="https://axios-http.com/docs/intro">
+                      Axios
+                    </Link>
+                  </ListItemText>
+                </ListItem>
+
+                <ListItem>
+                  <ListItemIcon><CodeIcon /></ListItemIcon>
+                  <ListItemText>
                     <Link href="https://reactrouter.com/en/main">
                       React Router
                     </Link>
@@ -174,15 +209,6 @@ function AboutPage() {
                   <ListItemText>
                     <Link href="https://momentjs.com/">
                       moment.js
-                    </Link>
-                  </ListItemText>
-                </ListItem>
-
-                <ListItem>
-                  <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>
-                    <Link href="https://axios-http.com/docs/intro">
-                      Axios
                     </Link>
                   </ListItemText>
                 </ListItem>
