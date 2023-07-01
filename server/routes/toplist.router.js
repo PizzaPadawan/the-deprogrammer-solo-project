@@ -73,7 +73,8 @@ router.get('/panels', rejectUnauthenticated, (req, res) => {
     JOIN "playlist" ON "masterlist"."playlist_id"="playlist"."id"
     JOIN "user" ON "user"."id"="toplist"."user_id"
     GROUP BY "masterlist"."playlist_id", "artist", "recording_date"
-    HAVING $1 = ANY(ARRAY_AGG("user"."id"));`
+    HAVING $1 = ANY(ARRAY_AGG("user"."id"))
+    ORDER BY "recording_date";`
 
     pool.query(queryText, [req.user.id])
         .then(result => {
