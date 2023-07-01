@@ -1,6 +1,7 @@
 import React from 'react';
-//Material UI imports
+//MUI
 import { Typography, IconButton, Container, Grid } from '@mui/material';
+// Icons
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';

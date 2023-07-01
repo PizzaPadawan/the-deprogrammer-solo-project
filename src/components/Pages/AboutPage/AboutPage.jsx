@@ -139,15 +139,6 @@ function AboutPage() {
                 <ListItem>
                   <ListItemIcon><CodeIcon /></ListItemIcon>
                   <ListItemText>
-                    <Link href="https://www.npmjs.com/package/cookie-session">
-                      cookie-session
-                    </Link>
-                  </ListItemText>
-                </ListItem>
-
-                <ListItem>
-                  <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>
                     <Link href="https://developer.spotify.com/documentation/web-api">
                       Spotify Web API
                     </Link>
