@@ -41,12 +41,12 @@ export default function PanelUsers() {
 
     // dispatch to add new user to selected panel
     const addUser = () => {
-        //validation
+        //validate username input field and currentList
         if (!username || !currentList) {
             alert("Please enter a valid username and select a panel")
             return;
         }
-
+        // validate to prevent trying to add duplicate user
         for(let user of panelUsers){
             if(username === user.username){
                 alert("Cannot add duplicate user")
@@ -54,8 +54,8 @@ export default function PanelUsers() {
             }
         }
 
-        // console.log({ currentList, username })
         dispatch({ type: "ADD_USER", payload: { playlist_id: currentList, username } })
+        //reset local state
         setUsername('')
     }
 
@@ -65,19 +65,20 @@ export default function PanelUsers() {
         if (!currentList) {
             return;
         }
-        // console.log({ user_id, playlist_id: currentList });
         dispatch({ type: "REMOVE_USER", payload: { user_id, playlist_id: currentList } });
 
         // close dialog box
         handleClose();
     }
 
+    // handler function to open Remove User dialog
     const handleClickOpen = (user_id, user_name) => {
         setUserDisplay(user_name)
         setUserID(user_id)
         setOpen(true)
     }
 
+    // handler function to close Remove User dialog
     const handleClose = () => {
         setOpen(false)
         setUserDisplay('')
@@ -107,6 +108,7 @@ export default function PanelUsers() {
     }));
 
     return (
+        // only render this component if our panelUsers store is populated
         panelUsers.length > 0 &&
         <Container maxWidth="xs">
             <Paper sx={{ p: 3, my: 5 }}>

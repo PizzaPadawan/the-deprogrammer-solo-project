@@ -153,8 +153,6 @@ export default function MasterList() {
                         </IconButton>
                     </Grid>
 
-                    {/* is our masterlist populated? */}
-
                     {masterlist.length > 0 && currentList && masterlist[0].recording_date
                         // if we've clicked on the currently displayed date to change it,
                         // we want to render the TextField and Buttons necessary to send new data
@@ -217,7 +215,7 @@ export default function MasterList() {
 
 
                     {/* we only want this to try render if we haven't selected a valid masterlist.
-                this will be our TextField field and button to add a spotify playlist link */}
+                    this will be our TextField field and button to add a spotify playlist link */}
                     {!masterlist[0] &&
                         <Grid item xs={4}>
                             <TextField
@@ -228,7 +226,7 @@ export default function MasterList() {
                                 onChange={e => setPlaylistURL(e.target.value)}
                             />
                             {/* after setting local state with our playlist url TextField, clicking this button
-                    will send our info to post from the Spotify API */}
+                            will send our info to post from the Spotify API */}
                             <IconButton
                                 variant="contained"
                                 color="warning"
@@ -241,20 +239,24 @@ export default function MasterList() {
 
                     <Grid item xs={12}>
                         {/* if we have selected a playlist_id, we'll render the masterlist for it here */}
-                        {masterlist[0] &&
-                            <TableContainer sx={{ maxHeight: 425 }}>
+                        {masterlist.length > 0 &&
+                            <TableContainer sx={{ maxHeight: 400 }}>
                                 <Table stickyHeader >
                                     <TableHead>
+                                        {/* Table title row */}
                                         <StyledTableRow>
-                                            <TableCell 
-                                            colSpan={3}
-                                            sx={{borderBottom:0,
-                                                backgroundColor:'black',
-                                                color:'#f57c00'}}
+                                            <TableCell
+                                                colSpan={3}
+                                                sx={{
+                                                    borderBottom: 0,
+                                                    backgroundColor: 'black',
+                                                    color: '#f57c00'
+                                                }}
                                             >
-                                                {masterlist.length > 0 && masterlist[0].artist}
+                                                {masterlist[0].artist}
                                             </TableCell>
                                         </StyledTableRow>
+                                        {/* Column title row */}
                                         <StyledTableRow >
                                             <StyledTableCell><FormatListNumberedIcon /></StyledTableCell>
                                             <StyledTableCell>Track</StyledTableCell>
@@ -265,6 +267,7 @@ export default function MasterList() {
                                         {masterlist.map((track, index) => {
                                             return (
                                                 <StyledTableRow key={track.id}>
+                                                    {/* index to show number of tracks in masterlist */}
                                                     <StyledTableCell>{index + 1}</StyledTableCell>
                                                     <StyledTableCell>{track.track}</StyledTableCell>
                                                     <StyledTableCell>{track.album}</StyledTableCell>
