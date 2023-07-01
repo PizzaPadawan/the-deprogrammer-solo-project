@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { Container, Typography, List, ListItem, ListItemText, ListItemIcon, Paper, Grid } from '@mui/material';
+// MUI
+import { Container, Typography, List, ListItem, ListItemText, ListItemIcon, Paper, Grid, Link } from '@mui/material';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import CodeIcon from '@mui/icons-material/Code';
-import DataObjectIcon from '@mui/icons-material/DataObject';
-import CodeOffIcon from '@mui/icons-material/CodeOff';
 
 function AboutPage() {
   return (
@@ -90,35 +89,43 @@ function AboutPage() {
         <Container>
           <Typography variant="h4">How was this made?</Typography>
           <Typography variant="body1" sx={{ pt: 2 }}>The Deprogrammer was my solo project for Tier 3 during my time studying Full-stack Javascript at Emerging Digital Academy.
-            The process of creating this project involved a week of planning, which involved creating wireframes on moqups.com to display
+            The process of creating this project started with a week of planning, which involved creating wireframes on moqups.com to display
             my ideas for each page, creating an Entity Relationship Diagram on dbdesigner.net to plan my database tables and their relationships,
             as well as importing screenshots of these into a scope document outlining the details and timeline of the project.
           </Typography>
           <Typography variant="body1" sx={{ pt: 3 }}>This application was built using the following frameworks and tools:</Typography>
 
-          <Grid container spacing={5} sx={{ m: 'auto', pb:3 }}>
+          <Grid container spacing={5} sx={{ m: 'auto', pb: 3 }}>
 
             <Grid item xs={6}>
               <Typography variant="body1" align='left' sx={{ py: 2 }}>Back End:</Typography>
               <List>
                 <ListItem>
                   <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>PostgreSQL</ListItemText>
+                  <ListItemText>
+                    <Link href="https://www.postgresql.org/" >
+                      PostgreSQL
+                    </Link>
+                  </ListItemText>
                 </ListItem>
 
                 <ListItem>
                   <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>Express.js</ListItemText>
+                  <ListItemText>
+                    <Link href="https://expressjs.com/">
+                      Express.js
+                    </Link>
+                  </ListItemText>
                 </ListItem>
+
 
                 <ListItem>
                   <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>Axios</ListItemText>
-                </ListItem>
-
-                <ListItem>
-                  <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>Spotify API</ListItemText>
+                  <ListItemText>
+                    <Link href="https://developer.spotify.com/documentation/web-api">
+                      Spotify Web API
+                    </Link>
+                  </ListItemText>
                 </ListItem>
               </List>
             </Grid>
@@ -128,37 +135,65 @@ function AboutPage() {
               <List>
                 <ListItem>
                   <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>React</ListItemText>
+                  <ListItemText>
+                    <Link href="https://react.dev/">
+                      React
+                    </Link>
+                  </ListItemText>
                 </ListItem>
 
                 <ListItem>
                   <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>React Redux</ListItemText>
+                  <ListItemText>
+                    <Link href="https://react-redux.js.org/">
+                      React Redux
+                    </Link>
+                  </ListItemText>
                 </ListItem>
 
                 <ListItem>
                   <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>Redux Saga</ListItemText>
+                  <ListItemText>
+                    <Link href="https://redux-saga.js.org/">
+                      Redux Saga
+                    </Link>
+                  </ListItemText>
                 </ListItem>
 
                 <ListItem>
                   <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>React Router</ListItemText>
+                  <ListItemText>
+                    <Link href="https://reactrouter.com/en/main">
+                      React Router
+                    </Link>
+                  </ListItemText>
                 </ListItem>
 
                 <ListItem>
                   <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>moment.js</ListItemText>
+                  <ListItemText>
+                    <Link href="https://momentjs.com/">
+                      moment.js
+                    </Link>
+                  </ListItemText>
                 </ListItem>
 
                 <ListItem>
                   <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>Axios</ListItemText>
+                  <ListItemText>
+                    <Link href="https://axios-http.com/docs/intro">
+                      Axios
+                    </Link>
+                  </ListItemText>
                 </ListItem>
 
                 <ListItem>
                   <ListItemIcon><CodeIcon /></ListItemIcon>
-                  <ListItemText>Material UI</ListItemText>
+                  <ListItemText>
+                    <Link href="https://mui.com/material-ui/getting-started/overview/">
+                      Material UI
+                    </Link>
+                  </ListItemText>
                 </ListItem>
               </List>
             </Grid>
