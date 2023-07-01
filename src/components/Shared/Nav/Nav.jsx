@@ -46,7 +46,7 @@ function Nav() {
         backgroundAttachment: "fixed"
       }}>
 
-      {/* Title with link to home / landing page */}
+      {/* Title with link to LandingPage / UserPage */}
       <Grid item >
         <Link href="/#/home" underline="none" >
           <Typography
@@ -68,7 +68,7 @@ function Nav() {
 
           {/* If no user is logged in, show these links */}
           {!user.id && (
-            // If there's no user, show login/registration links
+            // LoginPage
             <Link className="navLink" href="/#/login">
               <Button>Login / Register</Button>
             </Link>
@@ -103,12 +103,14 @@ function Nav() {
                       'aria-labelledby': 'edit-list-button',
                     }}>
 
+                    {/* ListEditor */}
                     <MenuItem onClick={handleClose}>
                       <Link className="navLink" href="/#/list-editor">
                         <Button>List Editor</Button>
                       </Link>
                     </MenuItem>
 
+                    {/* PanelEditor */}
                     <MenuItem onClick={handleClose}>
                       <Link className="navLink" href="/#/panel-editor">
                         <Button>Panel Editor</Button>
@@ -117,20 +119,24 @@ function Nav() {
                   </Menu>
                 </>
                 : <>
+                  {/* ListEditor */}
                   <Link className="navLink" href="/#/list-editor">
                     <Button>Edit</Button>
                   </Link>
                 </>
               }
 
+              {/* PlayPage */}
               <Link className="navLink" href="/#/play">
                 <Button>Play</Button>
               </Link>
+
 
               <LogOutButton className="navLink" />
             </>
           )}
 
+          {/* AboutPage */}
           <Link className="navLink" href="/#/about">
             <Button>About</Button>
           </Link>
