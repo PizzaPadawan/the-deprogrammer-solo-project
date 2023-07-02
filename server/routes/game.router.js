@@ -36,33 +36,6 @@ router.put('/play/:masterlist_id', rejectUnauthenticated, (req, res) => {
         });
 });
 
-// delete route to enter "Discussion" mode. Deletes all unplayed songs in masterlist.
-router.delete('/discussion/:playlist_id', rejectUnauthenticated, async (req, res) => {
-    if (req.user.is_admin) {
-        try {
-            // first, delete all applicable toplist entries
-            await pool.query(`
-            DELETE FROM "toplist"
-            WHERE "masterlist_id" IN (
-                SELECT "id"
-                FROM "masterlist"
-                WHERE "playlist_id" = $1 AND "is_played" = FALSE
-            );
-            `, [req.params.playlist_id])
-            // then delete masterlist entries
-            const queryText = `DELETE FROM "masterlist"
-        WHERE "playlist_id" = $1 AND "is_played" = FALSE;`
-            await pool.query(queryText, [req.params.playlist_id])
-                .then(response => res.sendStatus(204))
-                .catch(err => {
-                    console.log("Error on /discussion masterlist DELETE in @game.router", err);
-                });
-        } catch (error) {
-            console.log("Error on /discussion toplist DELETE in @game.router", err);
-        }
-    } else res.sendStatus(403);
-});
-
 // GET route to display current tallies for gameplay
 router.get('/tallies/:playlist_id', rejectUnauthenticated, (req, res) => {
     const playlistId = req.params.playlist_id;
