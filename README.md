@@ -22,20 +22,20 @@ I decided to make The Deprogrammer as a solution to that, so that the host and p
 ## Screenshots
 
 The home page for a logged in user. Here, the user has selected an upcoming panel to see the preview of their current top list.
-[User Home Page](/public/screenshots/Homepage.png)
+![User Home Page](/public/screenshots/Homepage.png)
 
 The EDIT page for a user (List Editor in the Edit dropdown for an admin user).
 This is where users will add and remove songs from their top list and add any notes to tracks.
-[List Editor](/public/screenshots/ListEditor.png)
+![List Editor](/public/screenshots/ListEditor.png)
 
 The Panel Editor for the Admin. The first screenshot is the Add New List option, where the admin can paste in a Spotify URL and add a recording date to create a new list.
 
 The second screenshot is the Panel Editor with a list selected, where the admin can add and remove users from the panel.
-[Panel Editor - Add New List](/public/screenshots/Panel_Add.png)
-[Panel Editor - Edit List](/public/screenshots/Panel_Edit.png)
+![Panel Editor - Add New List](/public/screenshots/Panel_Add.png)
+![Panel Editor - Edit List](/public/screenshots/Panel_Edit.png)
 
 This is the Play page, where all users on a panel can put songs into play while the admin has set the list to Game Mode. 
-[Play Page](/public/screenshots/PlayPage.png)
+![Play Page](/public/screenshots/PlayPage.png)
 
 ## Prerequisites
 - [Node.js](https://nodejs.org/en/)
