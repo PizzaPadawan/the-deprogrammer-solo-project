@@ -56,12 +56,12 @@ export default function PlayPage() {
                         playlist_id: currentList
                     }
                 });
-                dispatch({
-                    type: "FETCH_TOPLIST",
-                    payload: {
-                        playlist_id: currentList
-                    }
-                });
+                // dispatch({
+                //     type: "FETCH_TOPLIST",
+                //     payload: {
+                //         playlist_id: currentList
+                //     }
+                // });
             }
         }, 2000);
 
