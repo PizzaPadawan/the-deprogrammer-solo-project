@@ -51,6 +51,7 @@ function Nav() {
         <Link href="/#/home" underline="none" >
           <Typography
             variant="h2"
+            component="h1"
             color="warning.light"
             align="center"
             sx={{ textShadow: "-3px 3px 10px black" }}
